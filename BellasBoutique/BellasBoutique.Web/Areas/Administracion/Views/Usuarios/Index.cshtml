@@ -1,2 +1,98 @@
 @* Responsable: Juan Pablo
-   Tabla de usuarios con estado de la cuenta y rol. *@
+   Administración de usuarios (módulo 7): estado de las cuentas y asignación de roles. *@
+@{
+    ViewData["Title"] = "Usuarios y roles";
+    ViewData["Menu"] = "Usuarios";
+    ViewData["Migas"] = "Usuarios y roles";
+
+    // Datos de ejemplo para ver el diseño.
+    var usuarios = new[]
+    {
+        new { Id = "U-0001", Cedula = "1-1234-5678", Nombre = "Ana Mora Solís",      Correo = "ana.mora@correo.com", Rol = "Cliente",       Activo = true,  Ultimo = "14/11/2026 10:15" },
+        new { Id = "U-0002", Cedula = "2-2345-6789", Nombre = "Laura Jiménez Rojas", Correo = "laura.j@correo.com",  Rol = "Vendedor",      Activo = true,  Ultimo = "14/11/2026 09:58" },
+        new { Id = "U-0003", Cedula = "1-3456-7890", Nombre = "Carlos Vargas Pérez", Correo = "carlos.v@correo.com", Rol = "Administrador", Activo = true,  Ultimo = "14/11/2026 09:12" },
+        new { Id = "U-0004", Cedula = "3-4567-8901", Nombre = "Sofía Castro Brenes", Correo = "sofia.c@correo.com",  Rol = "Cliente",       Activo = false, Ultimo = "02/11/2026 18:40" }
+    };
+    var roles = new[] { "Cliente", "Vendedor", "Administrador" };
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Usuarios y roles</h1>
+        <p>@usuarios.Length usuarios &middot; @usuarios.Count(u => u.Activo) cuentas activas</p>
+    </div>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-herramientas">
+        <div class="adm-buscador">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+            <input class="adm-input" type="search" placeholder="Buscar por nombre, correo o cédula" aria-label="Buscar usuarios" />
+        </div>
+        <select class="adm-input adm-input--auto" aria-label="Rol"><option>Todos los roles</option><option>Cliente</option><option>Vendedor</option><option>Administrador</option></select>
+        <select class="adm-input adm-input--auto" aria-label="Estado"><option>Todos los estados</option><option>Activas</option><option>Inactivas</option></select>
+    </div>
+
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th class="adm-ordenable">ID</th>
+                    <th class="adm-ordenable">Usuario</th>
+                    <th>Cédula</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th class="adm-ordenable">Último acceso</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var u in usuarios)
+                {
+                    <tr>
+                        <td class="adm-mono">@u.Id</td>
+                        <td>
+                            <div class="adm-producto-celda">
+                                <span class="adm-avatar">@(u.Nombre.Substring(0, 1))</span>
+                                <div>@u.Nombre<small>@u.Correo</small></div>
+                            </div>
+                        </td>
+                        <td class="adm-mono">@u.Cedula</td>
+                        <td>
+                            <select class="adm-input adm-input--auto" aria-label="Rol de @u.Nombre" style="height: 30px;">
+                                @foreach (var r in roles)
+                                {
+                                    <option selected="@(r == u.Rol)">@r</option>
+                                }
+                            </select>
+                        </td>
+                        <td>
+                            @if (u.Activo)
+                            {
+                                <span class="adm-estado adm-estado--exito">Activa</span>
+                            }
+                            else
+                            {
+                                <span class="adm-estado">Inactiva</span>
+                            }
+                        </td>
+                        <td class="adm-mono">@u.Ultimo</td>
+                        <td>
+                            <div class="adm-acciones-fila">
+                                @if (u.Activo)
+                                {
+                                    <button class="adm-btn adm-btn--sm adm-btn--peligro" type="button">Desactivar</button>
+                                }
+                                else
+                                {
+                                    <button class="adm-btn adm-btn--sm" type="button">Activar</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="adm-pie-tabla"><span>Mostrando 1–@usuarios.Length de @usuarios.Length</span></div>
+</section>

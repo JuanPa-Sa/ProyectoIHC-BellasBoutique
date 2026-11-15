@@ -1,0 +1,28 @@
+@* Responsable: Juan Pablo
+   Layout de las pantallas de acceso (Login, Registro, Recuperar contraseña):
+   imagen de marca a la izquierda y formulario a la derecha, sin menú. *@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BellasBoutique</title>
+    <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="bb-acceso">
+        <div class="bb-acceso__imagen">
+            <span class="bb-etiqueta" style="color: var(--bb-tinta);">BellasBoutique</span>
+            <blockquote>Ropa, calzado y accesorios para cada ocasión.</blockquote>
+        </div>
+        <main class="bb-acceso__panel">
+            <a class="bb-logo" href="/">Bellas<small>Boutique</small></a>
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

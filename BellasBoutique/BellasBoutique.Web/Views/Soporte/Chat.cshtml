@@ -1,2 +1,35 @@
 @* Responsable: Eduardo
-   Chat en línea del cliente con el vendedor. *@
+   Chat en línea del cliente con el vendedor (módulo 6). *@
+@{
+    ViewData["Title"] = "Chat en línea";
+    ViewData["Menu"] = "Soporte";
+    ViewData["Pestana"] = "Chat";
+}
+<partial name="_MenuSoporte" />
+
+<div class="bb-contenedor" style="padding-bottom: 88px;">
+    <div class="bb-chat">
+        <div class="bb-chat__cabecera">
+            <span class="bb-chat__avatar">L</span>
+            <div><strong>Laura</strong> &middot; Vendedora<small>En línea</small></div>
+        </div>
+        <div class="bb-chat__mensajes">
+            <div class="bb-mensaje bb-mensaje--otro">
+                ¡Hola! Soy Laura, de BellasBoutique. ¿En qué le puedo ayudar?
+                <span class="bb-mensaje__hora">10:02</span>
+            </div>
+            <div class="bb-mensaje bb-mensaje--propio">
+                Hola, ¿el vestido floral viene en talla M?
+                <span class="bb-mensaje__hora">10:03</span>
+            </div>
+            <div class="bb-mensaje bb-mensaje--otro">
+                Sí, tenemos disponible en S, M y L.
+                <span class="bb-mensaje__hora">10:04</span>
+            </div>
+        </div>
+        <form class="bb-chat__escribir" method="post">
+            <input type="text" placeholder="Escriba un mensaje..." aria-label="Mensaje" />
+            <button class="bb-btn" type="button">Enviar</button>
+        </form>
+    </div>
+</div>

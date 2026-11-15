@@ -1,2 +1,24 @@
 @* Responsable: Juan Pablo
    Recuperar contraseña: el usuario ingresa su correo y recibe una nueva contraseña generada. *@
+@{
+    ViewData["Title"] = "Recuperar contraseña";
+    Layout = "_LayoutAcceso";
+}
+
+<form class="bb-acceso__form" method="post">
+    <h1>Recuperar contraseña</h1>
+    <p>Le enviaremos una nueva contraseña a su correo.</p>
+
+    <div class="bb-alerta bb-alerta--info">Ejemplo de mensaje: se envió una nueva contraseña a su correo.</div>
+
+    <div class="bb-campo">
+        <label for="correo">Correo electrónico</label>
+        <input id="correo" name="correo" type="email" placeholder="nombre@correo.com" />
+    </div>
+
+    <button class="bb-btn bb-btn--bloque" type="button">Enviar nueva contraseña</button>
+
+    <div class="bb-enlaces-formulario">
+        <a href="/Cuenta/Login">Volver a iniciar sesión</a>
+    </div>
+</form>

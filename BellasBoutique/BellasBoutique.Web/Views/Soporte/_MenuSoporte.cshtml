@@ -1,0 +1,20 @@
+@* Responsable: Eduardo
+   Cabecera y pestañas del módulo de Soporte. Cada vista indica su pestaña con ViewData["Pestana"]. *@
+@{
+    var pestana = ViewData["Pestana"] as string;
+}
+<section class="bb-cabecera-pagina">
+    <div class="bb-contenedor">
+        <div class="bb-migas"><a href="/">Inicio</a><span>Soporte</span></div>
+        <h1>Soporte al cliente</h1>
+        <p class="bb-texto-suave" style="margin: 0;">Estamos para ayudarle.</p>
+    </div>
+</section>
+<div class="bb-contenedor">
+    <nav class="bb-pestanas" aria-label="Opciones de soporte">
+        <a class="@(pestana == "Faq" ? "activo" : null)" href="/Soporte/PreguntasFrecuentes">Preguntas frecuentes</a>
+        <a class="@(pestana == "Encuesta" ? "activo" : null)" href="/Soporte/Encuesta">Encuesta</a>
+        <a class="@(pestana == "Sugerencias" ? "activo" : null)" href="/Soporte/Sugerencias">Sugerencias</a>
+        <a class="@(pestana == "Chat" ? "activo" : null)" href="/Soporte/Chat">Chat en línea</a>
+    </nav>
+</div>

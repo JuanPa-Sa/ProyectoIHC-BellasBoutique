@@ -1,2 +1,69 @@
 @* Responsable: Eduardo
-   Formulario de producto para registrar y modificar. *@
+   Formulario de producto (módulo 3) para registrar y modificar. *@
+@{
+    ViewData["Title"] = "Registrar producto";
+    ViewData["Menu"] = "Productos";
+    ViewData["Migas"] = "Productos / Registrar";
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Registrar producto</h1>
+        <p>Este mismo formulario se usa para modificar un producto.</p>
+    </div>
+    <a class="adm-btn" href="/Administracion/Productos">&larr; Volver a productos</a>
+</div>
+
+<form class="adm-form" method="post">
+    <section class="adm-panel" style="margin: 0;">
+        <div class="adm-seccion-form">
+            <h3>Información general</h3>
+            <div class="adm-rejilla">
+                <div class="adm-campo">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" name="nombre" type="text" />
+                </div>
+                <div class="adm-campo">
+                    <label for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria"><option>Ropa</option><option>Calzado</option><option>Accesorios</option></select>
+                </div>
+            </div>
+            <div class="adm-campo">
+                <label for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion"></textarea>
+            </div>
+        </div>
+
+        <div class="adm-seccion-form">
+            <h3>Precio e inventario</h3>
+            <div class="adm-rejilla">
+                <div class="adm-campo">
+                    <label for="precio">Precio (₡)</label>
+                    <input id="precio" name="precio" type="number" min="0" />
+                    <span class="adm-ayuda">Sin impuesto. El 13% se suma en la factura.</span>
+                </div>
+                <div class="adm-campo">
+                    <label for="stock">Stock disponible</label>
+                    <input id="stock" name="stock" type="number" min="0" />
+                </div>
+                <div class="adm-campo">
+                    <label for="proveedor">Proveedor</label>
+                    <input id="proveedor" name="proveedor" type="text" />
+                </div>
+            </div>
+        </div>
+
+        <div class="adm-form-acciones">
+            <a class="adm-btn" href="/Administracion/Productos">Cancelar</a>
+            <button class="adm-btn adm-btn--acento" type="button">Guardar producto</button>
+        </div>
+    </section>
+
+    <section class="adm-panel" style="margin: 0;">
+        <div class="adm-panel__cabecera"><h2>Imagen</h2></div>
+        <div class="adm-panel__cuerpo">
+            <label class="adm-subida" for="imagen">Arrastre una imagen o haga clic para elegirla<br />JPG o PNG</label>
+            <input id="imagen" name="imagen" type="file" accept="image/*" style="display: none;" />
+        </div>
+    </section>
+</form>

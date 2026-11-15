@@ -1,2 +1,68 @@
 @* Responsable: Eduardo
-   Catálogo: imagen, nombre, descripción, precio, stock, categoría, proveedor, filtro y botón añadir al carrito. *@
+   Catálogo (módulo 3): imagen, nombre, descripción, precio, stock, categoría, proveedor,
+   filtro por categoría y botón añadir al carrito con cantidad. *@
+@{
+    ViewData["Title"] = "Catálogo";
+    ViewData["Menu"] = "Catalogo";
+
+    // Datos de ejemplo para ver el diseño. Se reemplazan por los productos reales.
+    var productos = new[]
+    {
+        new { Nombre = "Vestido floral",      Descripcion = "Vestido midi de algodón con estampado floral.", Precio = 24500m, Stock = 12, Categoria = "Ropa",       Proveedor = "Moda Tica" },
+        new { Nombre = "Blusa de lino",       Descripcion = "Blusa fresca de lino en tono crema.",           Precio = 15900m, Stock = 8,  Categoria = "Ropa",       Proveedor = "Moda Tica" },
+        new { Nombre = "Sandalias trenzadas", Descripcion = "Sandalias planas de cuero trenzado.",           Precio = 21000m, Stock = 5,  Categoria = "Calzado",    Proveedor = "Pasos CR" },
+        new { Nombre = "Tacones nude",        Descripcion = "Tacón medio, cómodos para todo el día.",        Precio = 32000m, Stock = 3,  Categoria = "Calzado",    Proveedor = "Pasos CR" },
+        new { Nombre = "Bolso tote",          Descripcion = "Bolso amplio de tela con asas de cuero.",       Precio = 18750m, Stock = 10, Categoria = "Accesorios", Proveedor = "Detalles" },
+        new { Nombre = "Aretes de perla",     Descripcion = "Aretes pequeños con perla sintética.",          Precio = 7500m,  Stock = 20, Categoria = "Accesorios", Proveedor = "Detalles" }
+    };
+}
+
+<section class="bb-cabecera-pagina">
+    <div class="bb-contenedor">
+        <div class="bb-migas"><a href="/">Inicio</a><span>Catálogo</span></div>
+        <h1>Catálogo</h1>
+        <p class="bb-texto-suave" style="margin: 0;">Ropa, calzado y accesorios disponibles.</p>
+    </div>
+</section>
+
+<div class="bb-contenedor">
+    <div class="bb-catalogo">
+        <aside class="bb-filtros" aria-label="Filtros">
+            <h4>Categorías</h4>
+            <ul>
+                <li><label class="bb-check"><input type="checkbox" checked /> Todas <small>6</small></label></li>
+                <li><label class="bb-check"><input type="checkbox" /> Ropa <small>2</small></label></li>
+                <li><label class="bb-check"><input type="checkbox" /> Calzado <small>2</small></label></li>
+                <li><label class="bb-check"><input type="checkbox" /> Accesorios <small>2</small></label></li>
+            </ul>
+        </aside>
+
+        <div>
+            <div class="bb-barra-resultados">
+                <span>Mostrando @productos.Length productos</span>
+            </div>
+
+            <div class="bb-grid-productos">
+                @foreach (var p in productos)
+                {
+                    <article class="bb-producto">
+                        <div class="bb-producto__media">
+                            <div class="bb-imagen-vacia">Foto del producto</div>
+                            <div class="bb-producto__accion">
+                                <input type="number" min="1" max="@p.Stock" value="1" aria-label="Cantidad de @p.Nombre" />
+                                <button class="bb-btn bb-btn--pequeno" type="button">Añadir</button>
+                            </div>
+                        </div>
+                        <div class="bb-producto__info">
+                            <span class="bb-etiqueta">@p.Categoria</span>
+                            <h3 class="bb-producto__nombre">@p.Nombre</h3>
+                            <span class="bb-producto__precio">₡@(p.Precio.ToString("N0"))</span>
+                            <span class="bb-producto__datos">@p.Descripcion</span>
+                            <span class="bb-producto__datos">@p.Stock disponibles &middot; @p.Proveedor</span>
+                        </div>
+                    </article>
+                }
+            </div>
+        </div>
+    </div>
+</div>

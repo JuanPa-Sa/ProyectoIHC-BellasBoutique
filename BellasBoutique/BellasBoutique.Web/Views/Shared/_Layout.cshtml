@@ -1,2 +1,118 @@
 @* Responsable: Joel
-   Layout de la vista Cliente: menú a Catálogo, Carrito, Soporte, Mi perfil y Cerrar sesión (req. 8d). *@
+   Layout de la vista Cliente (req. 8d): barra de anuncios, encabezado con logo centrado,
+   menú de categorías, pie de página y botón flotante al chat de soporte.
+   Cada vista indica su sección con ViewData["Menu"] para marcar el enlace activo. *@
+@{
+    var menu = ViewData["Menu"] as string;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BellasBoutique</title>
+    <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="bb-anuncio" aria-label="Anuncios">
+        <div class="bb-anuncio__pista">
+            <span>Pague con tarjeta, SINPE Móvil o transferencia</span>
+            <span>Nueva colección disponible</span>
+            <span>Factura digital en cada compra</span>
+            <span>Chat en línea con nuestras asesoras</span>
+            <span aria-hidden="true">Pague con tarjeta, SINPE Móvil o transferencia</span>
+            <span aria-hidden="true">Nueva colección disponible</span>
+            <span aria-hidden="true">Factura digital en cada compra</span>
+            <span aria-hidden="true">Chat en línea con nuestras asesoras</span>
+        </div>
+    </div>
+
+    <header class="bb-encabezado">
+        <div class="bb-contenedor">
+            <div class="bb-encabezado__fila">
+                <div class="bb-encabezado__vacio">
+                    <a class="bb-icono" href="/Soporte">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14" /><path d="M12 17.5v.01" /></svg>
+                        <span>Ayuda</span>
+                    </a>
+                </div>
+                <a class="bb-logo" href="/">Bellas<small>Boutique</small></a>
+                <div class="bb-iconos">
+                    <a class="bb-icono" href="/Perfil" aria-label="Mi cuenta">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6" /></svg>
+                        <span>Mi cuenta</span>
+                    </a>
+                    <a class="bb-icono" href="/Carrito" aria-label="Carrito">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 13H6.2L5 8z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
+                        <b class="bb-icono__contador">3</b>
+                        <span>Carrito</span>
+                    </a>
+                </div>
+            </div>
+            <nav aria-label="Categorías">
+                <ul class="bb-menu">
+                    <li><a href="/" class="@(menu == "Inicio" ? "activo" : null)">Inicio</a></li>
+                    <li><a href="/Catalogo" class="@(menu == "Catalogo" ? "activo" : null)">Catálogo</a></li>
+                    <li><a href="/Catalogo?categoria=Ropa">Ropa</a></li>
+                    <li><a href="/Catalogo?categoria=Calzado">Calzado</a></li>
+                    <li><a href="/Catalogo?categoria=Accesorios">Accesorios</a></li>
+                    <li><a href="/Soporte" class="@(menu == "Soporte" ? "activo" : null)">Soporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="bb-principal">
+        @RenderBody()
+    </main>
+
+    <footer class="bb-pie">
+        <div class="bb-contenedor">
+            <div class="bb-pie__columnas">
+                <div>
+                    <a class="bb-logo" href="/">Bellas<small>Boutique</small></a>
+                    <p style="margin-top: 18px; max-width: 280px;">Ropa, calzado y accesorios seleccionados para cada ocasión.</p>
+                </div>
+                <div>
+                    <h4>Tienda</h4>
+                    <ul>
+                        <li><a href="/Catalogo?categoria=Ropa">Ropa</a></li>
+                        <li><a href="/Catalogo?categoria=Calzado">Calzado</a></li>
+                        <li><a href="/Catalogo?categoria=Accesorios">Accesorios</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="/Soporte/PreguntasFrecuentes">Preguntas frecuentes</a></li>
+                        <li><a href="/Soporte/Encuesta">Encuesta de satisfacción</a></li>
+                        <li><a href="/Soporte/Sugerencias">Sugerencias</a></li>
+                        <li><a href="/Soporte/Chat">Chat en línea</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Mi cuenta</h4>
+                    <ul>
+                        <li><a href="/Perfil">Mi perfil</a></li>
+                        <li><a href="/Carrito">Carrito</a></li>
+                        <li><a href="/Cuenta/Login">Cerrar sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bb-pie__legal">
+                <span>&copy; 2026 BellasBoutique</span>
+                <span>Tarjeta &middot; SINPE Móvil &middot; Transferencia</span>
+            </div>
+        </div>
+    </footer>
+
+    <a class="bb-chat-flotante" href="/Soporte/Chat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>
+        <span>Chat en línea</span>
+    </a>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

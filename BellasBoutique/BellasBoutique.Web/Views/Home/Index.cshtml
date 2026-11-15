@@ -1,2 +1,81 @@
 @* Responsable: Joel
    Página de inicio de la vista Cliente. *@
+@{
+    ViewData["Title"] = "Inicio";
+    ViewData["Menu"] = "Inicio";
+
+    // Datos de ejemplo para ver el diseño. Se reemplazan por los productos reales.
+    var destacados = new[]
+    {
+        new { Nombre = "Vestido floral",      Categoria = "Ropa",       Precio = 24500m, Cinta = "Nuevo" },
+        new { Nombre = "Sandalias trenzadas", Categoria = "Calzado",    Precio = 21000m, Cinta = "" },
+        new { Nombre = "Bolso tote",          Categoria = "Accesorios", Precio = 18750m, Cinta = "Nuevo" },
+        new { Nombre = "Blusa de lino",       Categoria = "Ropa",       Precio = 15900m, Cinta = "" }
+    };
+}
+
+<section class="bb-portada">
+    <div class="bb-portada__imagen bb-imagen-vacia">Foto de campaña</div>
+    <div class="bb-portada__texto">
+        <span class="bb-etiqueta">Nueva colección 2026</span>
+        <h1>Elegancia para <em>cada</em> ocasión</h1>
+        <p>Ropa, calzado y accesorios seleccionados para que encuentre su estilo y lo compre en pocos pasos.</p>
+        <div>
+            <a class="bb-btn" href="/Catalogo">Ver catálogo</a>
+        </div>
+    </div>
+</section>
+
+<section class="bb-seccion">
+    <div class="bb-contenedor">
+        <div class="bb-titulo-seccion">
+            <span class="bb-etiqueta">Compre por categoría</span>
+            <h2>Nuestras colecciones</h2>
+        </div>
+        <div class="bb-categorias">
+            <a class="bb-categoria bb-categoria--ropa" href="/Catalogo?categoria=Ropa">
+                <div class="bb-categoria__marco"><h3>Ropa</h3><span class="bb-etiqueta">Ver todo</span></div>
+            </a>
+            <a class="bb-categoria bb-categoria--calzado" href="/Catalogo?categoria=Calzado">
+                <div class="bb-categoria__marco"><h3>Calzado</h3><span class="bb-etiqueta">Ver todo</span></div>
+            </a>
+            <a class="bb-categoria bb-categoria--accesorios" href="/Catalogo?categoria=Accesorios">
+                <div class="bb-categoria__marco"><h3>Accesorios</h3><span class="bb-etiqueta">Ver todo</span></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="bb-seccion bb-seccion--crema">
+    <div class="bb-contenedor">
+        <div class="bb-titulo-seccion">
+            <span class="bb-etiqueta">Lo más pedido</span>
+            <h2>Destacados</h2>
+        </div>
+        <div class="bb-grid-productos bb-grid-productos--4">
+            @foreach (var p in destacados)
+            {
+                <article class="bb-producto">
+                    <div class="bb-producto__media">
+                        <div class="bb-imagen-vacia">Foto del producto</div>
+                        @if (p.Cinta != "")
+                        {
+                            <span class="bb-producto__cinta">@p.Cinta</span>
+                        }
+                        <div class="bb-producto__accion">
+                            <button class="bb-btn bb-btn--pequeno" type="button">Añadir al carrito</button>
+                        </div>
+                    </div>
+                    <div class="bb-producto__info">
+                        <span class="bb-etiqueta">@p.Categoria</span>
+                        <h3 class="bb-producto__nombre">@p.Nombre</h3>
+                        <span class="bb-producto__precio">₡@(p.Precio.ToString("N0"))</span>
+                    </div>
+                </article>
+            }
+        </div>
+        <div class="bb-centrado" style="margin-top: 48px;">
+            <a class="bb-btn bb-btn--borde" href="/Catalogo">Ver todo el catálogo</a>
+        </div>
+    </div>
+</section>

@@ -1,2 +1,80 @@
 @* Responsable: Joel
-   Reporte diario y mensual: productos vendidos e ingresos generados. *@
+   Reportes diarios y mensuales (módulo 5): cantidad de productos vendidos e ingresos generados. *@
+@{
+    ViewData["Title"] = "Reportes";
+    ViewData["Menu"] = "Reportes";
+    ViewData["Migas"] = "Reportes";
+    ViewData["Pestana"] = "Diario";
+
+    // Datos de ejemplo para ver el diseño.
+    var filas = new[]
+    {
+        new { Producto = "Vestido floral",      Categoria = "Ropa",       Cantidad = 6, Ingresos = 147000m },
+        new { Producto = "Sandalias trenzadas", Categoria = "Calzado",    Cantidad = 4, Ingresos = 84000m },
+        new { Producto = "Aretes de perla",     Categoria = "Accesorios", Cantidad = 8, Ingresos = 60000m }
+    };
+    var total = filas.Sum(f => f.Ingresos);
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Reportes de ventas</h1>
+        <p>Productos vendidos e ingresos generados por periodo.</p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <select class="adm-input adm-input--auto" aria-label="Periodo"><option>Diario</option><option>Mensual</option></select>
+        <input class="adm-input adm-input--auto" type="date" aria-label="Fecha" />
+    </div>
+</div>
+
+<partial name="_MenuReportes" />
+
+<div class="adm-kpis" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Productos vendidos</div>
+        <div class="adm-kpi__valor">@filas.Sum(f => f.Cantidad)</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Ingresos generados</div>
+        <div class="adm-kpi__valor">₡@(total.ToString("N0"))</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Productos distintos</div>
+        <div class="adm-kpi__valor">@filas.Length</div>
+    </div>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-panel__cabecera"><h2>Detalle por producto</h2></div>
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th class="adm-numero">Cantidad vendida</th>
+                    <th class="adm-numero">Ingresos</th>
+                    <th>% de los ingresos</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in filas)
+                {
+                    var porcentaje = (int)Math.Round(f.Ingresos * 100 / total);
+                    <tr>
+                        <td>@f.Producto</td>
+                        <td>@f.Categoria</td>
+                        <td class="adm-numero">@f.Cantidad</td>
+                        <td class="adm-numero">₡@(f.Ingresos.ToString("N0"))</td>
+                        <td>
+                            <div class="adm-participacion">
+                                <div class="adm-stock__barra"><span style="width: @(porcentaje)%;"></span></div>
+                                <span class="adm-mono">@porcentaje%</span>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

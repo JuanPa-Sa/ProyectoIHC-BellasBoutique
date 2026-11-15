@@ -1,0 +1,9 @@
+@* Responsable: Joel
+   Pestañas de Reportes. Cada vista indica su pestaña con ViewData["Pestana"]. *@
+@{
+    var pestana = ViewData["Pestana"] as string;
+}
+<nav class="adm-pestanas" aria-label="Tipo de reporte">
+    <a class="@(pestana == "Diario" ? "activo" : null)" href="/Administracion/Reportes">Diario y mensual</a>
+    <a class="@(pestana == "FinDelDia" ? "activo" : null)" href="/Administracion/Reportes/FinDelDia">Final del día</a>
+</nav>

@@ -1,2 +1,98 @@
 @* Responsable: Joel
-   Layout de la vista Administración: menú a Usuarios, Productos, Ventas y reportes, y Cerrar sesión (req. 8d). *@
+   Layout del panel (Administrador y Vendedor, req. 8d): menú lateral por grupos,
+   barra superior con migas, rol del usuario y tiempo de sesión.
+   Cada vista indica:
+     ViewData["Menu"]  -> enlace activo del menú lateral
+     ViewData["Migas"] -> nombre de la sección en la barra superior
+   Cuando exista el login, el menú debe ocultar a los vendedores lo que solo ve el administrador. *@
+@{
+    var menu = ViewData["Menu"] as string;
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Panel BellasBoutique</title>
+    <link rel="stylesheet" href="~/css/fonts.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="adm">
+        <aside class="adm-lateral">
+            <div class="adm-marca">
+                <span class="adm-marca__logo">BB</span>
+                <div>BellasBoutique<small>Panel de gestión</small></div>
+            </div>
+
+            <div class="adm-grupo">General</div>
+            <ul class="adm-nav">
+                <li><a href="/Administracion" class="@(menu == "Inicio" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" /></svg>
+                    Resumen</a></li>
+            </ul>
+
+            <div class="adm-grupo">Tienda</div>
+            <ul class="adm-nav">
+                <li><a href="/Administracion/Productos" class="@(menu == "Productos" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7l9-4 9 4-9 4-9-4z" /><path d="M3 7v10l9 4 9-4V7" /><path d="M12 11v10" /></svg>
+                    Productos</a></li>
+                <li><a href="/Administracion/Ventas" class="@(menu == "Ventas" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4z" /><path d="M8 9h8M8 13h8M8 17h5" /></svg>
+                    Ventas</a></li>
+                <li><a href="/Administracion/Reportes" class="@(menu == "Reportes" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></svg>
+                    Reportes</a></li>
+            </ul>
+
+            <div class="adm-grupo">Usuarios</div>
+            <ul class="adm-nav">
+                <li><a href="/Administracion/Usuarios" class="@(menu == "Usuarios" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2.2.6 3.5 2.4 3.5 5.2" /></svg>
+                    Usuarios y roles</a></li>
+                <li><a href="/Administracion/Bitacora" class="@(menu == "Bitacora" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
+                    Bitácora</a></li>
+            </ul>
+
+            <div class="adm-grupo">Soporte</div>
+            <ul class="adm-nav">
+                <li><a href="/Administracion/Soporte" class="@(menu == "Soporte" ? "activo" : null)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>
+                    Chat con clientes <span class="adm-nav__contador">2</span></a></li>
+            </ul>
+
+            <div class="adm-grupo">Cuenta</div>
+            <ul class="adm-nav">
+                <li><a href="/">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-7 9 7v10H3z" /><path d="M9 20v-6h6v6" /></svg>
+                    Ver tienda</a></li>
+                <li><a href="/Cuenta/Login">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4v16h-4" /><path d="M10 8l-4 4 4 4M6 12h10" /></svg>
+                    Cerrar sesión</a></li>
+            </ul>
+        </aside>
+
+        <div class="adm-cuerpo">
+            <header class="adm-barra">
+                <div class="adm-migas">Panel<span><strong>@ViewData["Migas"]</strong></span></div>
+                <div class="adm-barra__derecha">
+                    <span class="adm-sesion" title="La sesión se cierra tras 5 minutos de inactividad">Sesión 05:00</span>
+                    <span class="adm-rol">Administrador</span>
+                    <div class="adm-usuario">
+                        <span class="adm-avatar">CV</span>
+                        <span>Carlos Vargas</span>
+                    </div>
+                </div>
+            </header>
+
+            <main class="adm-contenido">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,2 +1,64 @@
 @* Responsable: Joel
-   Confirmar compra: Tarjeta, SINPE o Transferencia (simulación). *@
+   Confirmar compra (módulo 4): método de pago Tarjeta, SINPE o Transferencia (simulación) y dirección de entrega. *@
+@{
+    ViewData["Title"] = "Confirmar compra";
+    ViewData["Menu"] = "Carrito";
+
+    var subtotal = 60500m; // Dato de ejemplo
+}
+
+<section class="bb-cabecera-pagina">
+    <div class="bb-contenedor">
+        <div class="bb-migas"><a href="/">Inicio</a><a href="/Carrito"><span>Carrito</span></a><span>Pago</span></div>
+        <h1>Confirmar compra</h1>
+        <p class="bb-texto-suave" style="margin: 0;">Elija el método de pago y la dirección de entrega.</p>
+    </div>
+</section>
+
+<div class="bb-contenedor bb-pagina">
+    <div class="bb-pasos">
+        <span class="hecho"><b>&check;</b> Carrito</span>
+        <span class="activo"><b>2</b> Pago</span>
+        <span><b>3</b> Factura</span>
+    </div>
+
+    <div class="bb-carrito">
+        <form method="post">
+            <h2 class="bb-subtitulo">Método de pago</h2>
+            <div class="bb-metodos-pago">
+                <label class="bb-metodo-pago">
+                    <input type="radio" name="metodo" value="Tarjeta" checked />
+                    <strong>Tarjeta</strong>
+                    <small>Crédito o débito</small>
+                </label>
+                <label class="bb-metodo-pago">
+                    <input type="radio" name="metodo" value="SINPE" />
+                    <strong>SINPE Móvil</strong>
+                    <small>Pago desde su celular</small>
+                </label>
+                <label class="bb-metodo-pago">
+                    <input type="radio" name="metodo" value="Transferencia" />
+                    <strong>Transferencia</strong>
+                    <small>Depósito bancario</small>
+                </label>
+            </div>
+
+            <h2 class="bb-subtitulo">Dirección de entrega</h2>
+            <div class="bb-campo">
+                <label for="direccion">Dirección</label>
+                <textarea id="direccion" name="direccion" rows="3">San Pedro, Montes de Oca</textarea>
+            </div>
+        </form>
+
+        <aside>
+            <div class="bb-totales">
+                <h3>Resumen</h3>
+                <div class="bb-totales__fila"><span>Subtotal</span><span>₡@(subtotal.ToString("N0"))</span></div>
+                <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
+                <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
+            </div>
+            <a class="bb-btn bb-btn--bloque" href="/Factura/Detalle" style="margin-top: 16px;">Pagar y generar factura</a>
+            <a class="bb-btn bb-btn--borde bb-btn--bloque" href="/Carrito" style="margin-top: 10px;">Volver al carrito</a>
+        </aside>
+    </div>
+</div>

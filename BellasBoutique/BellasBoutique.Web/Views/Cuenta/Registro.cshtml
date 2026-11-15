@@ -1,2 +1,65 @@
 @* Responsable: Juan Pablo
    Registro: ID, cédula, nombre, apellidos, correo, teléfono, dirección, contraseña segura y rol. *@
+@{
+    ViewData["Title"] = "Crear cuenta";
+    Layout = "_LayoutAcceso";
+}
+
+<form class="bb-acceso__form bb-acceso__form--ancho" method="post">
+    <h1>Crear cuenta</h1>
+    <p>Complete sus datos para registrarse.</p>
+
+    <div class="bb-fila-campos">
+        <div class="bb-campo">
+            <label for="id">ID</label>
+            <input id="id" name="id" type="text" />
+        </div>
+        <div class="bb-campo">
+            <label for="cedula">Cédula</label>
+            <input id="cedula" name="cedula" type="text" placeholder="1-2345-6789" />
+        </div>
+        <div class="bb-campo">
+            <label for="nombre">Nombre completo</label>
+            <input id="nombre" name="nombre" type="text" />
+        </div>
+        <div class="bb-campo">
+            <label for="apellidos">Apellidos</label>
+            <input id="apellidos" name="apellidos" type="text" />
+        </div>
+        <div class="bb-campo">
+            <label for="correo">Correo electrónico</label>
+            <input id="correo" name="correo" type="email" placeholder="nombre@correo.com" />
+        </div>
+        <div class="bb-campo">
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" name="telefono" type="tel" placeholder="8888-8888" />
+        </div>
+    </div>
+
+    <div class="bb-campo">
+        <label for="direccion">Dirección</label>
+        <textarea id="direccion" name="direccion" rows="2" style="min-height: 80px;"></textarea>
+    </div>
+
+    <div class="bb-fila-campos">
+        <div class="bb-campo">
+            <label for="contrasena">Contraseña</label>
+            <input id="contrasena" name="contrasena" type="password" />
+            <span class="bb-ayuda">Minúsculas, mayúsculas, números y caracteres especiales.</span>
+        </div>
+        <div class="bb-campo">
+            <label for="rol">Rol</label>
+            <select id="rol" name="rol">
+                <option>Cliente</option>
+                <option>Vendedor</option>
+                <option>Administrador</option>
+            </select>
+        </div>
+    </div>
+
+    <button class="bb-btn bb-btn--bloque" type="button">Registrarme</button>
+
+    <div class="bb-enlaces-formulario">
+        <a href="/Cuenta/Login">¿Ya tiene cuenta? Inicie sesión</a>
+    </div>
+</form>

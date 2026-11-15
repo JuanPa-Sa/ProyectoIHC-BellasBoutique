@@ -1,2 +1,112 @@
 @* Responsable: Eduardo
-   Tabla de productos con botones de registrar, modificar, actualizar stock y dar de baja. *@
+   Gestión de productos (módulo 3): registrar, modificar, actualizar stock y dar de baja. *@
+@{
+    ViewData["Title"] = "Productos";
+    ViewData["Menu"] = "Productos";
+    ViewData["Migas"] = "Productos";
+
+    // Datos de ejemplo para ver el diseño.
+    var productos = new[]
+    {
+        new { Codigo = "P-0001", Nombre = "Vestido floral",      Categoria = "Ropa",       Precio = 24500m, Stock = 12, Proveedor = "Moda Tica", Activo = true },
+        new { Codigo = "P-0002", Nombre = "Blusa de lino",       Categoria = "Ropa",       Precio = 15900m, Stock = 2,  Proveedor = "Moda Tica", Activo = true },
+        new { Codigo = "P-0003", Nombre = "Sandalias trenzadas", Categoria = "Calzado",    Precio = 21000m, Stock = 1,  Proveedor = "Pasos CR",  Activo = true },
+        new { Codigo = "P-0004", Nombre = "Tacones nude",        Categoria = "Calzado",    Precio = 32000m, Stock = 3,  Proveedor = "Pasos CR",  Activo = true },
+        new { Codigo = "P-0005", Nombre = "Bolso tote",          Categoria = "Accesorios", Precio = 18750m, Stock = 10, Proveedor = "Detalles",  Activo = true },
+        new { Codigo = "P-0006", Nombre = "Collar dorado",       Categoria = "Accesorios", Precio = 9900m,  Stock = 0,  Proveedor = "Detalles",  Activo = false }
+    };
+    const int stockReferencia = 20; // solo para dibujar la barra de ejemplo
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Productos</h1>
+        <p>@productos.Length productos &middot; @productos.Count(p => p.Stock <= 3 && p.Activo) con stock bajo</p>
+    </div>
+    <a class="adm-btn adm-btn--acento" href="/Administracion/Productos/Formulario">+ Registrar producto</a>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-herramientas">
+        <div class="adm-buscador">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+            <input class="adm-input" type="search" placeholder="Buscar por nombre o código" aria-label="Buscar productos" />
+        </div>
+        <select class="adm-input adm-input--auto" aria-label="Categoría">
+            <option>Todas las categorías</option><option>Ropa</option><option>Calzado</option><option>Accesorios</option>
+        </select>
+        <select class="adm-input adm-input--auto" aria-label="Estado">
+            <option>Todos los estados</option><option>Activos</option><option>Dados de baja</option>
+        </select>
+    </div>
+
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th class="adm-check"><input type="checkbox" aria-label="Seleccionar todos" /></th>
+                    <th class="adm-ordenable">Producto</th>
+                    <th>Código</th>
+                    <th>Categoría</th>
+                    <th>Proveedor</th>
+                    <th class="adm-numero adm-ordenable">Precio</th>
+                    <th class="adm-ordenable">Stock</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in productos)
+                {
+                    var nivel = p.Stock <= 3 ? "adm-stock--bajo" : p.Stock <= 8 ? "adm-stock--medio" : "";
+                    var ancho = Math.Min(100, p.Stock * 100 / stockReferencia);
+                    <tr>
+                        <td class="adm-check"><input type="checkbox" aria-label="Seleccionar @p.Nombre" /></td>
+                        <td>
+                            <div class="adm-producto-celda">
+                                <div class="adm-miniatura"></div>
+                                <div>@p.Nombre</div>
+                            </div>
+                        </td>
+                        <td class="adm-mono">@p.Codigo</td>
+                        <td>@p.Categoria</td>
+                        <td>@p.Proveedor</td>
+                        <td class="adm-numero">₡@(p.Precio.ToString("N0"))</td>
+                        <td>
+                            <div class="adm-stock @nivel">
+                                <span class="adm-mono">@p.Stock</span>
+                                <div class="adm-stock__barra"><span style="width: @(ancho)%;"></span></div>
+                            </div>
+                        </td>
+                        <td>
+                            @if (p.Activo)
+                            {
+                                <span class="adm-estado adm-estado--exito">Activo</span>
+                            }
+                            else
+                            {
+                                <span class="adm-estado">Dado de baja</span>
+                            }
+                        </td>
+                        <td>
+                            <div class="adm-acciones-fila">
+                                <a class="adm-btn adm-btn--sm" href="/Administracion/Productos/Formulario">Modificar</a>
+                                <button class="adm-btn adm-btn--sm" type="button">Stock</button>
+                                <button class="adm-btn adm-btn--sm adm-btn--peligro" type="button">Dar de baja</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="adm-pie-tabla">
+        <span>Mostrando 1–@productos.Length de @productos.Length</span>
+        <div class="adm-paginas">
+            <button class="adm-btn adm-btn--icono adm-btn--sm" type="button" aria-label="Anterior">&lsaquo;</button>
+            <button class="adm-btn adm-btn--icono adm-btn--sm activo" type="button">1</button>
+            <button class="adm-btn adm-btn--icono adm-btn--sm" type="button" aria-label="Siguiente">&rsaquo;</button>
+        </div>
+    </div>
+</section>

@@ -1,2 +1,22 @@
 @* Responsable: Eduardo
-   Sugerencias enviadas al administrador. *@
+   Sugerencias enviadas al administrador (módulo 6). *@
+@{
+    ViewData["Title"] = "Sugerencias";
+    ViewData["Menu"] = "Soporte";
+    ViewData["Pestana"] = "Sugerencias";
+}
+<partial name="_MenuSoporte" />
+
+<div class="bb-contenedor" style="padding-bottom: 88px;">
+    <form class="bb-formulario" method="post">
+        <h2 class="bb-subtitulo">Envíenos su sugerencia</h2>
+        <p class="bb-texto-suave">La recibirá el administrador de la tienda.</p>
+
+        <div class="bb-campo">
+            <label for="sugerencia">Sugerencia</label>
+            <textarea id="sugerencia" name="sugerencia" style="min-height: 160px;"></textarea>
+        </div>
+
+        <button class="bb-btn" type="button">Enviar sugerencia</button>
+    </form>
+</div>

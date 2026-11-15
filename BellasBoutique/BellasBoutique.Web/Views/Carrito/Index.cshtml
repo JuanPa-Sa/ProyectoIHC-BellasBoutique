@@ -1,2 +1,77 @@
 @* Responsable: Joel
-   Carrito: productos con cantidad deseada y subtotal. *@
+   Carrito (módulo 4): productos con cantidad deseada, asociado al usuario y fecha de creación. *@
+@{
+    ViewData["Title"] = "Carrito";
+    ViewData["Menu"] = "Carrito";
+
+    // Datos de ejemplo para ver el diseño. Se reemplazan por el carrito real del usuario.
+    var items = new[]
+    {
+        new { Nombre = "Vestido floral",      Categoria = "Ropa",       Precio = 24500m, Cantidad = 1 },
+        new { Nombre = "Sandalias trenzadas", Categoria = "Calzado",    Precio = 21000m, Cantidad = 1 },
+        new { Nombre = "Aretes de perla",     Categoria = "Accesorios", Precio = 7500m,  Cantidad = 2 }
+    };
+    var subtotal = items.Sum(i => i.Precio * i.Cantidad);
+}
+
+<section class="bb-cabecera-pagina">
+    <div class="bb-contenedor">
+        <div class="bb-migas"><a href="/">Inicio</a><span>Carrito</span></div>
+        <h1>Mi carrito</h1>
+        <p class="bb-texto-suave" style="margin: 0;">Creado el @DateTime.Now.ToString("dd/MM/yyyy") &middot; @items.Sum(i => i.Cantidad) artículos</p>
+    </div>
+</section>
+
+<div class="bb-contenedor bb-pagina">
+    <div class="bb-pasos">
+        <span class="activo"><b>1</b> Carrito</span>
+        <span><b>2</b> Pago</span>
+        <span><b>3</b> Factura</span>
+    </div>
+
+    <div class="bb-carrito">
+        <div class="bb-tabla-scroll">
+        <table class="bb-tabla">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th class="bb-numero">Precio</th>
+                    <th>Cantidad</th>
+                    <th class="bb-numero">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var i in items)
+                {
+                    <tr>
+                        <td>
+                            <div class="bb-item">
+                                <div class="bb-item__foto"></div>
+                                <div>
+                                    <span class="bb-etiqueta">@i.Categoria</span>
+                                    <div class="bb-item__nombre">@i.Nombre</div>
+                                    <button class="bb-quitar" type="button">Quitar</button>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="bb-numero">₡@(i.Precio.ToString("N0"))</td>
+                        <td><input class="bb-input bb-cantidad" type="number" min="1" value="@i.Cantidad" aria-label="Cantidad de @i.Nombre" /></td>
+                        <td class="bb-numero">₡@((i.Precio * i.Cantidad).ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+
+        <aside>
+            <div class="bb-totales">
+                <h3>Resumen</h3>
+                <div class="bb-totales__fila"><span>Subtotal</span><span>₡@(subtotal.ToString("N0"))</span></div>
+                <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
+                <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
+            </div>
+            <a class="bb-btn bb-btn--bloque" href="/Carrito/ConfirmarCompra" style="margin-top: 16px;">Confirmar compra</a>
+            <a class="bb-btn bb-btn--borde bb-btn--bloque" href="/Catalogo" style="margin-top: 10px;">Seguir comprando</a>
+        </aside>
+    </div>
+</div>

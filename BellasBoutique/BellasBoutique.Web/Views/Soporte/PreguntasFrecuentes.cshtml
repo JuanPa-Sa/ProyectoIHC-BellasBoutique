@@ -1,2 +1,29 @@
 @* Responsable: Eduardo
-   Preguntas frecuentes. *@
+   Preguntas frecuentes (módulo 6). *@
+@{
+    ViewData["Title"] = "Preguntas frecuentes";
+    ViewData["Menu"] = "Soporte";
+    ViewData["Pestana"] = "Faq";
+}
+<partial name="_MenuSoporte" />
+
+<div class="bb-contenedor" style="padding-bottom: 88px;">
+    <div class="bb-faq">
+        <details open>
+            <summary>¿Cuáles métodos de pago aceptan?</summary>
+            <p>Tarjeta, SINPE Móvil y transferencia bancaria.</p>
+        </details>
+        <details>
+            <summary>¿Cuánto tarda en llegar mi pedido?</summary>
+            <p>Texto de ejemplo con el tiempo de entrega.</p>
+        </details>
+        <details>
+            <summary>¿Puedo cambiar una prenda?</summary>
+            <p>Texto de ejemplo con la política de cambios.</p>
+        </details>
+        <details>
+            <summary>¿Cómo recupero mi contraseña?</summary>
+            <p>En la pantalla de inicio de sesión, use la opción "¿Olvidó su contraseña?".</p>
+        </details>
+    </div>
+</div>

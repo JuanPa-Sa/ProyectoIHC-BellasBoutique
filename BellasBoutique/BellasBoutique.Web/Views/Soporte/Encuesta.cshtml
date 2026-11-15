@@ -1,2 +1,33 @@
 @* Responsable: Eduardo
-   Encuesta de satisfacción: puntaje de 1 a 5 con comentarios. *@
+   Encuesta de satisfacción (módulo 6): puntaje de 1 a 5 con comentarios. *@
+@{
+    ViewData["Title"] = "Encuesta de satisfacción";
+    ViewData["Menu"] = "Soporte";
+    ViewData["Pestana"] = "Encuesta";
+}
+<partial name="_MenuSoporte" />
+
+<div class="bb-contenedor" style="padding-bottom: 88px;">
+    <form class="bb-formulario" method="post">
+        <h2 class="bb-subtitulo">¿Cómo fue su experiencia?</h2>
+
+        <div class="bb-campo">
+            <label>Puntaje</label>
+            <div class="bb-puntaje" role="radiogroup" aria-label="Puntaje de 1 a 5">
+                @for (var i = 1; i <= 5; i++)
+                {
+                    <input id="puntaje-@i" type="radio" name="puntaje" value="@i" />
+                    <label for="puntaje-@i">@i</label>
+                }
+            </div>
+            <div class="bb-puntaje__leyenda"><span>Muy mala</span><span>Excelente</span></div>
+        </div>
+
+        <div class="bb-campo">
+            <label for="comentario">Comentarios</label>
+            <textarea id="comentario" name="comentario"></textarea>
+        </div>
+
+        <button class="bb-btn" type="button">Enviar encuesta</button>
+    </form>
+</div>

@@ -1,2 +1,77 @@
 @* Responsable: Joel
-   Factura: detalle con cantidad, precio y fecha; subtotal, impuesto 13% y total; método, estado y fecha del pago. *@
+   Factura (módulos 4 y 5): detalle con cantidad, precio y fecha; subtotal, impuesto 13% y total;
+   asociada al usuario, carrito y pago. Al comprar se envía un correo de confirmación (req. 8b). *@
+@{
+    ViewData["Title"] = "Factura";
+    ViewData["Menu"] = "Carrito";
+
+    // Datos de ejemplo para ver el diseño. Se reemplazan por la factura real.
+    var fecha = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
+    var detalle = new[]
+    {
+        new { Nombre = "Vestido floral",      Precio = 24500m, Cantidad = 1 },
+        new { Nombre = "Sandalias trenzadas", Precio = 21000m, Cantidad = 1 },
+        new { Nombre = "Aretes de perla",     Precio = 7500m,  Cantidad = 2 }
+    };
+    var subtotal = detalle.Sum(d => d.Precio * d.Cantidad);
+}
+
+<div class="bb-contenedor bb-pagina">
+    <div class="bb-pasos">
+        <span class="hecho"><b>&check;</b> Carrito</span>
+        <span class="hecho"><b>&check;</b> Pago</span>
+        <span class="activo"><b>3</b> Factura</span>
+    </div>
+
+    <div class="bb-factura">
+        <div class="bb-alerta bb-alerta--exito">¡Compra confirmada! Le enviamos un correo con la factura y la dirección de entrega.</div>
+
+        <div class="bb-factura__cabecera">
+            <div>
+                <span class="bb-etiqueta">Factura digital</span>
+                <h1 style="margin: 4px 0 0;">N.º 0001</h1>
+            </div>
+            <a class="bb-logo" href="/" style="text-align: right;">Bellas<small>Boutique</small></a>
+        </div>
+
+        <div class="bb-factura__datos">
+            <div><span class="bb-etiqueta">Cliente</span>Ana Mora Solís<br />ana.mora@correo.com</div>
+            <div><span class="bb-etiqueta">Fecha de compra</span>@fecha</div>
+            <div><span class="bb-etiqueta">Pago</span>Tarjeta &middot; <span class="bb-insignia bb-insignia--exitoso">Exitoso</span></div>
+        </div>
+
+        <div class="bb-tabla-scroll">
+        <table class="bb-tabla">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th class="bb-numero">Cantidad</th>
+                    <th class="bb-numero">Precio</th>
+                    <th class="bb-numero">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in detalle)
+                {
+                    <tr>
+                        <td>@d.Nombre</td>
+                        <td class="bb-numero">@d.Cantidad</td>
+                        <td class="bb-numero">₡@(d.Precio.ToString("N0"))</td>
+                        <td class="bb-numero">₡@((d.Precio * d.Cantidad).ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+
+        <div class="bb-totales">
+            <div class="bb-totales__fila"><span>Subtotal</span><span>₡@(subtotal.ToString("N0"))</span></div>
+            <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
+            <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
+        </div>
+    </div>
+
+    <div class="bb-centrado" style="margin-top: 32px;">
+        <a class="bb-btn bb-btn--borde" href="/Catalogo">Seguir comprando</a>
+    </div>
+</div>

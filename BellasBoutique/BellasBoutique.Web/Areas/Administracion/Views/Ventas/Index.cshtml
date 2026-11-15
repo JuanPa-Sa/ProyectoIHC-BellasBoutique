@@ -1,2 +1,64 @@
 @* Responsable: Joel
-   Historial de ventas: producto, cantidad, precio unitario y fecha de venta. *@
+   Historial de ventas (módulo 5): producto, cantidad, precio unitario y fecha de venta (tabla Ventas). *@
+@{
+    ViewData["Title"] = "Ventas";
+    ViewData["Menu"] = "Ventas";
+    ViewData["Migas"] = "Ventas";
+
+    // Datos de ejemplo para ver el diseño.
+    var ventas = new[]
+    {
+        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Vestido floral",      Cantidad = 1, Precio = 24500m },
+        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Sandalias trenzadas", Cantidad = 1, Precio = 21000m },
+        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Aretes de perla",     Cantidad = 2, Precio = 7500m },
+        new { Fecha = "13/11/2026 16:20", Factura = "F-0000", Producto = "Bolso tote",          Cantidad = 1, Precio = 18750m }
+    };
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Historial de ventas</h1>
+        <p>@ventas.Sum(v => v.Cantidad) productos vendidos &middot; ₡@(ventas.Sum(v => v.Precio * v.Cantidad).ToString("N0")) en el periodo</p>
+    </div>
+    <a class="adm-btn" href="/Administracion/Reportes">Ver reportes</a>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-herramientas">
+        <div class="adm-buscador">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
+            <input class="adm-input" type="search" placeholder="Buscar producto o factura" aria-label="Buscar ventas" />
+        </div>
+        <input class="adm-input adm-input--auto" type="date" aria-label="Desde" />
+        <input class="adm-input adm-input--auto" type="date" aria-label="Hasta" />
+    </div>
+
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th class="adm-ordenable">Fecha de venta</th>
+                    <th>Factura</th>
+                    <th class="adm-ordenable">Producto</th>
+                    <th class="adm-numero">Cantidad</th>
+                    <th class="adm-numero">Precio unitario</th>
+                    <th class="adm-numero adm-ordenable">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var v in ventas)
+                {
+                    <tr>
+                        <td class="adm-mono">@v.Fecha</td>
+                        <td class="adm-mono">@v.Factura</td>
+                        <td>@v.Producto</td>
+                        <td class="adm-numero">@v.Cantidad</td>
+                        <td class="adm-numero">₡@(v.Precio.ToString("N0"))</td>
+                        <td class="adm-numero">₡@((v.Precio * v.Cantidad).ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="adm-pie-tabla"><span>Mostrando 1–@ventas.Length de @ventas.Length</span></div>
+</section>

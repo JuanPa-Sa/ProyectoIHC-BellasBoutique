@@ -1,2 +1,76 @@
 @* Responsable: Joel
-   Reporte del final del día: productos vendidos, ingresos y productos con stock bajo. *@
+   Reporte del final del día (req. 8e): productos vendidos, ingresos por ventas y productos con stock bajo. *@
+@{
+    ViewData["Title"] = "Reporte del final del día";
+    ViewData["Menu"] = "Reportes";
+    ViewData["Migas"] = "Reportes / Final del día";
+    ViewData["Pestana"] = "FinDelDia";
+
+    // Datos de ejemplo para ver el diseño.
+    var stockBajo = new[]
+    {
+        new { Codigo = "P-0003", Producto = "Sandalias trenzadas", Categoria = "Calzado", Stock = 1 },
+        new { Codigo = "P-0002", Producto = "Blusa de lino",       Categoria = "Ropa",    Stock = 2 },
+        new { Codigo = "P-0004", Producto = "Tacones nude",        Categoria = "Calzado", Stock = 3 }
+    };
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Reporte del final del día</h1>
+        <p>Generado el <span class="adm-mono">@DateTime.Now.ToString("dd/MM/yyyy HH:mm")</span></p>
+    </div>
+    <button class="adm-btn" type="button">Imprimir</button>
+</div>
+
+<partial name="_MenuReportes" />
+
+<div class="adm-kpis" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Productos vendidos</div>
+        <div class="adm-kpi__valor">18</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Ingresos por ventas</div>
+        <div class="adm-kpi__valor">₡312 400</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Productos con stock bajo</div>
+        <div class="adm-kpi__valor">@stockBajo.Length</div>
+        <div class="adm-kpi__delta adm-kpi__delta--baja">Requiere reposición</div>
+    </div>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-panel__cabecera"><h2>Productos con stock bajo</h2></div>
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Categoría</th>
+                    <th>Stock</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var s in stockBajo)
+                {
+                    <tr>
+                        <td class="adm-mono">@s.Codigo</td>
+                        <td>@s.Producto</td>
+                        <td>@s.Categoria</td>
+                        <td>
+                            <div class="adm-stock adm-stock--bajo">
+                                <span class="adm-mono">@s.Stock</span>
+                                <div class="adm-stock__barra"><span style="width: @(s.Stock * 5)%;"></span></div>
+                            </div>
+                        </td>
+                        <td><span class="adm-estado adm-estado--error">Stock bajo</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

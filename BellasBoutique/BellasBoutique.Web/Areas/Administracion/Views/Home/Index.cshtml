@@ -1,2 +1,115 @@
 @* Responsable: Joel
-   Página de inicio de la vista Administración. *@
+   Página de inicio del panel: resumen del día. *@
+@{
+    ViewData["Title"] = "Resumen";
+    ViewData["Menu"] = "Inicio";
+    ViewData["Migas"] = "Resumen";
+
+    // Datos de ejemplo para ver el diseño.
+    var semana = new[] { ("Lun", 42), ("Mar", 58), ("Mié", 35), ("Jue", 70), ("Vie", 88), ("Sáb", 100), ("Dom", 64) };
+    var ultimas = new[]
+    {
+        new { Factura = "F-0001", Cliente = "Ana Mora Solís",      Metodo = "Tarjeta",       Total = 68365m, Estado = "Exitoso" },
+        new { Factura = "F-0002", Cliente = "María Quesada Arias", Metodo = "SINPE",         Total = 27120m, Estado = "Pendiente" },
+        new { Factura = "F-0003", Cliente = "Sofía Castro Brenes", Metodo = "Transferencia", Total = 36160m, Estado = "Fallido" }
+    };
+}
+
+<div class="adm-titulo">
+    <div>
+        <h1>Resumen del día</h1>
+        <p>Datos de ejemplo &middot; actualizado a las @DateTime.Now.ToString("HH:mm")</p>
+    </div>
+    <div style="display: flex; gap: 8px;">
+        <a class="adm-btn" href="/Administracion/Reportes/FinDelDia">Reporte del día</a>
+        <a class="adm-btn adm-btn--acento" href="/Administracion/Productos/Formulario">+ Registrar producto</a>
+    </div>
+</div>
+
+<div class="adm-kpis">
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Productos vendidos</div>
+        <div class="adm-kpi__valor">18</div>
+        <div class="adm-kpi__delta adm-kpi__delta--sube">+12% vs. ayer</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Ingresos</div>
+        <div class="adm-kpi__valor">₡312 400</div>
+        <div class="adm-kpi__delta adm-kpi__delta--sube">+8% vs. ayer</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Stock bajo</div>
+        <div class="adm-kpi__valor">3</div>
+        <div class="adm-kpi__delta adm-kpi__delta--baja">Requiere reposición</div>
+    </div>
+    <div class="adm-kpi">
+        <div class="adm-kpi__etiqueta">Pagos pendientes</div>
+        <div class="adm-kpi__valor">1</div>
+        <div class="adm-kpi__delta adm-suave">SINPE por confirmar</div>
+    </div>
+</div>
+
+<div class="adm-columnas">
+    <section class="adm-panel">
+        <div class="adm-panel__cabecera">
+            <h2>Ingresos de la semana</h2>
+            <select class="adm-input adm-input--auto" aria-label="Periodo"><option>Esta semana</option><option>Este mes</option></select>
+        </div>
+        <div class="adm-panel__cuerpo">
+            <div class="adm-grafico">
+                @foreach (var (dia, valor) in semana)
+                {
+                    <div class="adm-grafico__col">
+                        <div class="adm-grafico__barra" style="height: @(valor)%;" title="@dia"></div>
+                        <small>@dia</small>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+    <section class="adm-panel">
+        <div class="adm-panel__cabecera">
+            <h2>Stock bajo</h2>
+            <a class="adm-btn adm-btn--sm" href="/Administracion/Productos">Ver productos</a>
+        </div>
+        <ul class="adm-lista">
+            <li><span>Sandalias trenzadas</span><span class="adm-estado adm-estado--error">1 unidad</span></li>
+            <li><span>Blusa de lino</span><span class="adm-estado adm-estado--error">2 unidades</span></li>
+            <li><span>Tacones nude</span><span class="adm-estado adm-estado--aviso">3 unidades</span></li>
+        </ul>
+    </section>
+</div>
+
+<section class="adm-panel">
+    <div class="adm-panel__cabecera">
+        <h2>Últimas facturas</h2>
+        <a class="adm-btn adm-btn--sm" href="/Administracion/Ventas">Ver ventas</a>
+    </div>
+    <div class="adm-tabla-contenedor">
+        <table class="adm-tabla">
+            <thead>
+                <tr>
+                    <th>Factura</th>
+                    <th>Cliente</th>
+                    <th>Método</th>
+                    <th>Estado del pago</th>
+                    <th class="adm-numero">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var f in ultimas)
+                {
+                    var clase = f.Estado == "Exitoso" ? "adm-estado--exito" : f.Estado == "Pendiente" ? "adm-estado--aviso" : "adm-estado--error";
+                    <tr>
+                        <td class="adm-mono">@f.Factura</td>
+                        <td>@f.Cliente</td>
+                        <td>@f.Metodo</td>
+                        <td><span class="adm-estado @clase">@f.Estado</span></td>
+                        <td class="adm-numero">₡@(f.Total.ToString("N0"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

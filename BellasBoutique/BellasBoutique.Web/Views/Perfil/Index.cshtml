@@ -1,2 +1,59 @@
 @* Responsable: Juan Pablo
-   Mi perfil. *@
+   Mi perfil (módulo 7): editar nombre, apellidos, dirección y teléfono; ID y correo no editables. *@
+@{
+    ViewData["Title"] = "Mi perfil";
+    ViewData["Menu"] = "Perfil";
+}
+
+<section class="bb-cabecera-pagina">
+    <div class="bb-contenedor">
+        <div class="bb-migas"><a href="/">Inicio</a><span>Mi cuenta</span></div>
+        <h1>Mi cuenta</h1>
+        <p class="bb-texto-suave" style="margin: 0;">Hola, Ana. Aquí puede actualizar sus datos.</p>
+    </div>
+</section>
+
+<div class="bb-contenedor bb-pagina">
+    <div class="bb-cuenta">
+        <ul class="bb-cuenta__menu">
+            <li><a class="activo" href="/Perfil">Mis datos</a></li>
+            <li><a href="/Carrito">Mi carrito</a></li>
+            <li><a href="/Soporte">Ayuda</a></li>
+            <li><a href="/Cuenta/Login">Cerrar sesión</a></li>
+        </ul>
+
+        <form method="post">
+            <h2 class="bb-subtitulo">Mis datos</h2>
+            <div class="bb-fila-campos">
+                <div class="bb-campo">
+                    <label for="id">ID</label>
+                    <input id="id" type="text" value="U-0001" readonly />
+                    <span class="bb-ayuda">No se puede modificar.</span>
+                </div>
+                <div class="bb-campo">
+                    <label for="correo">Correo electrónico</label>
+                    <input id="correo" type="email" value="ana.mora@correo.com" readonly />
+                    <span class="bb-ayuda">No se puede modificar.</span>
+                </div>
+                <div class="bb-campo">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" name="nombre" type="text" value="Ana" />
+                </div>
+                <div class="bb-campo">
+                    <label for="apellidos">Apellidos</label>
+                    <input id="apellidos" name="apellidos" type="text" value="Mora Solís" />
+                </div>
+                <div class="bb-campo">
+                    <label for="telefono">Teléfono</label>
+                    <input id="telefono" name="telefono" type="tel" value="8888-8888" />
+                </div>
+            </div>
+            <div class="bb-campo">
+                <label for="direccion">Dirección</label>
+                <textarea id="direccion" name="direccion" rows="2" style="min-height: 80px;">San Pedro, Montes de Oca</textarea>
+            </div>
+
+            <button class="bb-btn" type="button">Guardar cambios</button>
+        </form>
+    </div>
+</div>
