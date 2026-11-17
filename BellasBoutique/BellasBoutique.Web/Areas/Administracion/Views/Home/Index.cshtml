@@ -5,20 +5,21 @@
     ViewData["Menu"] = "Inicio";
     ViewData["Migas"] = "Resumen";
 
-    // Datos de ejemplo para ver el diseño.
-    var semana = new[] { ("Lun", 42), ("Mar", 58), ("Mié", 35), ("Jue", 70), ("Vie", 88), ("Sáb", 100), ("Dom", 64) };
-    var ultimas = new[]
-    {
-        new { Factura = "F-0001", Cliente = "Ana Mora Solís",      Metodo = "Tarjeta",       Total = 68365m, Estado = "Exitoso" },
-        new { Factura = "F-0002", Cliente = "María Quesada Arias", Metodo = "SINPE",         Total = 27120m, Estado = "Pendiente" },
-        new { Factura = "F-0003", Cliente = "Sofía Castro Brenes", Metodo = "Transferencia", Total = 36160m, Estado = "Fallido" }
-    };
+    var ventas=(List<BellasBoutique.Web.Models.Demo.VentaFila>)ViewBag.Ventas;
+    var pagos=(List<BellasBoutique.Web.Models.Demo.PagoFila>)ViewBag.Pagos;
+    var stock=(List<BellasBoutique.Web.Models.Demo.ProductoDemo>)ViewBag.Stock;
+    var hoy=ventas.Where(v=>v.FechaReal.Date==DateTime.Today).ToList();
+    var ultimas=pagos.Take(5);
+    var dias=(string)ViewBag.Periodo=="mes"?30:7;
+    var cifras=Enumerable.Range(0,dias).Select(i=>{var d=DateTime.Today.AddDays(i-dias+1);return (d.ToString("dd/MM"),ventas.Where(v=>v.FechaReal.Date==d).Sum(v=>v.Precio*v.Cantidad));}).ToArray();
+    var max=Math.Max(1m,cifras.Max(v=>v.Item2));
+    var semana=cifras.Select(v=>(v.Item1,(int)(v.Item2*100/max)));
 }
 
 <div class="adm-titulo">
     <div>
         <h1>Resumen del día</h1>
-        <p>Datos de ejemplo &middot; actualizado a las @DateTime.Now.ToString("HH:mm")</p>
+        <p>Datos de ventas &middot; actualizado a las @DateTime.Now.ToString("HH:mm")</p>
     </div>
     <div style="display: flex; gap: 8px;">
         <a class="adm-btn" href="/Administracion/Reportes/FinDelDia">Reporte del día</a>
@@ -29,31 +30,31 @@
 <div class="adm-kpis">
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Productos vendidos</div>
-        <div class="adm-kpi__valor">18</div>
-        <div class="adm-kpi__delta adm-kpi__delta--sube">+12% vs. ayer</div>
+        <div class="adm-kpi__valor">@hoy.Sum(v=>v.Cantidad)</div>
+        <div class="adm-kpi__delta adm-kpi__delta--sube">Unidades del día</div>
     </div>
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Ingresos</div>
-        <div class="adm-kpi__valor">₡312 400</div>
-        <div class="adm-kpi__delta adm-kpi__delta--sube">+8% vs. ayer</div>
+        <div class="adm-kpi__valor">₡@(hoy.Sum(v=>v.Cantidad*v.Precio).ToString("N0"))</div>
+        <div class="adm-kpi__delta adm-kpi__delta--sube">Antes de IVA</div>
     </div>
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Stock bajo</div>
-        <div class="adm-kpi__valor">3</div>
+        <div class="adm-kpi__valor">@stock.Count</div>
         <div class="adm-kpi__delta adm-kpi__delta--baja">Requiere reposición</div>
     </div>
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Pagos pendientes</div>
-        <div class="adm-kpi__valor">1</div>
-        <div class="adm-kpi__delta adm-suave">SINPE por confirmar</div>
+        <div class="adm-kpi__valor">@pagos.Count(p=>p.Estado=="Pendiente")</div>
+        <div class="adm-kpi__delta adm-suave">Simulaciones pendientes</div>
     </div>
 </div>
 
 <div class="adm-columnas">
     <section class="adm-panel">
         <div class="adm-panel__cabecera">
-            <h2>Ingresos de la semana</h2>
-            <select class="adm-input adm-input--auto" aria-label="Periodo"><option>Esta semana</option><option>Este mes</option></select>
+            <h2>Ingresos del periodo</h2>
+            <select class="adm-input adm-input--auto" aria-label="Periodo" onchange="location.href='/Administracion/Home?periodo='+this.value"><option value="semana" selected="@((string)ViewBag.Periodo!="mes")">Esta semana</option><option value="mes" selected="@((string)ViewBag.Periodo=="mes")">Este mes</option></select>
         </div>
         <div class="adm-panel__cuerpo">
             <div class="adm-grafico">
@@ -74,9 +75,7 @@
             <a class="adm-btn adm-btn--sm" href="/Administracion/Productos">Ver productos</a>
         </div>
         <ul class="adm-lista">
-            <li><span>Sandalias trenzadas</span><span class="adm-estado adm-estado--error">1 unidad</span></li>
-            <li><span>Blusa de lino</span><span class="adm-estado adm-estado--error">2 unidades</span></li>
-            <li><span>Tacones nude</span><span class="adm-estado adm-estado--aviso">3 unidades</span></li>
+            @foreach(var p in stock){<li><span>@p.Nombre</span><span class="adm-estado adm-estado--error">@p.Stock unidades</span></li>}
         </ul>
     </section>
 </div>

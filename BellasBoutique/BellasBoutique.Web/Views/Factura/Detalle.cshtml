@@ -19,7 +19,7 @@
     </div>
 
     <div class="bb-factura">
-        <div class="bb-alerta bb-alerta--exito">¡Compra confirmada! Simulación: se enviaría un correo con la factura y la dirección de entrega.</div>
+        <div class="bb-alerta bb-alerta--exito">¡Compra confirmada! Pago simulado. Se genera un correo de confirmación.</div>
 
         <div class="bb-factura__cabecera">
             <div>
@@ -31,7 +31,7 @@
 
         <div class="bb-factura__datos">
             <div><span class="bb-etiqueta">Cliente</span>@factura.Cliente<br />@factura.Correo</div>
-            <div><span class="bb-etiqueta">Fecha de compra</span>@fecha</div>
+            <div><span class="bb-etiqueta">Fecha de compra</span>@fecha</div><div><span class="bb-etiqueta">Dirección de entrega</span>@factura.Direccion</div>
             <div><span class="bb-etiqueta">Pago</span>@factura.Metodo &middot; <span class="bb-insignia bb-insignia--exitoso">Exitoso</span></div>
         </div>
 
@@ -61,8 +61,8 @@
 
         <div class="bb-totales">
             <div class="bb-totales__fila"><span>Subtotal</span><span>₡@(subtotal.ToString("N0"))</span></div>
-            <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
-            <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
+            <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@(factura.Impuesto.ToString("N2"))</span></div>
+            <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@(factura.Total.ToString("N2"))</span></div>
         </div>
     </div>
 

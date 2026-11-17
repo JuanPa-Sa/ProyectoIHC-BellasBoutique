@@ -5,14 +5,8 @@
     ViewData["Menu"] = "Ventas";
     ViewData["Migas"] = "Ventas";
 
-    // Datos de ejemplo para ver el diseño.
-    var ventas = new[]
-    {
-        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Vestido floral",      Cantidad = 1, Precio = 24500m },
-        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Sandalias trenzadas", Cantidad = 1, Precio = 21000m },
-        new { Fecha = "14/11/2026 10:15", Factura = "F-0001", Producto = "Aretes de perla",     Cantidad = 2, Precio = 7500m },
-        new { Fecha = "13/11/2026 16:20", Factura = "F-0000", Producto = "Bolso tote",          Cantidad = 1, Precio = 18750m }
-    };
+    // Datos de SQL Server.
+    var ventas = (List<BellasBoutique.Web.Models.Demo.VentaFila>)Model;
 }
 
 <div class="adm-titulo">
@@ -60,5 +54,7 @@
             </tbody>
         </table>
     </div>
-    <div class="adm-pie-tabla"><span>Mostrando 1–@ventas.Length de @ventas.Length</span></div>
+    <div class="adm-pie-tabla"><span>Mostrando 1–@ventas.Count de @ventas.Count</span></div>
 </section>
+
+<script>document.addEventListener('DOMContentLoaded',()=>{const controls=[...document.querySelectorAll('.adm-herramientas input,.adm-herramientas select')];function filter(){const q=controls[0].value.toLowerCase();const dates=controls.filter(x=>x.type==='date');const sel=controls.find(x=>x.tagName==='SELECT');document.querySelectorAll('tbody tr').forEach(r=>{const parts=r.cells[0].textContent.trim().slice(0,10).split('/');const d=parts.reverse().join('-');r.hidden=!(r.textContent.toLowerCase().includes(q)&&(!sel||sel.selectedIndex===0||r.cells[3].textContent.trim()===sel.value)&&(!dates[0].value||d>=dates[0].value)&&(!dates[1].value||d<=dates[1].value));});}controls.forEach(x=>x.addEventListener('input',filter));});</script>

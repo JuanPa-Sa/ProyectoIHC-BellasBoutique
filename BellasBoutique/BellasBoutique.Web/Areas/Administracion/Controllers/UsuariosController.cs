@@ -5,5 +5,5 @@ namespace BellasBoutique.Web.Areas.Administracion.Controllers;
 public class UsuariosController(TiendaDb db):Controller
 {
     public IActionResult Index(){if(HttpContext.Session.GetString("Rol")!="Administrador")return Redirect("/Cuenta/Login");return View(db.Usuarios());}
-    [HttpPost,ValidateAntiForgeryToken] public IActionResult Cambiar(int id,string rol,bool activo){if(HttpContext.Session.GetString("Rol")!="Administrador")return Redirect("/Cuenta/Login");if(new[]{"Cliente","Vendedor","Administrador"}.Contains(rol)&&id!=HttpContext.Session.GetInt32("UsuarioId"))db.ModificarUsuario(id,rol,activo);return RedirectToAction(nameof(Index));}
+    [HttpPost,ValidateAntiForgeryToken] public IActionResult Cambiar(int id,string rol,bool activo){if(HttpContext.Session.GetString("Rol")!="Administrador")return Redirect("/Cuenta/Login");if(new[]{"Cliente","Vendedor","Administrador"}.Contains(rol)&&id!=HttpContext.Session.GetInt32("UsuarioId")){db.ModificarUsuario(id,rol,activo);db.Log(HttpContext.Session.GetInt32("UsuarioId")!.Value,activo?"Modificación":"Baja","Usuario "+id+" / "+rol);}return RedirectToAction(nameof(Index));}
 }

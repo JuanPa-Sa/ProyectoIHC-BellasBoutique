@@ -6,52 +6,11 @@
     ViewData["Migas"] = "Chat con clientes";
 }
 
-<div class="adm-titulo">
-    <div>
-        <h1>Chat con clientes</h1>
-        <p>2 conversaciones sin responder.</p>
-    </div>
-</div>
-
-<section class="adm-panel adm-chat">
-    <div class="adm-conversaciones">
-        <div class="adm-buscador">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg>
-            <input class="adm-input" type="search" placeholder="Buscar cliente" aria-label="Buscar conversación" />
-        </div>
-        <div class="adm-conversacion activo">
-            <span class="adm-avatar">A</span>
-            <div class="adm-conversacion__texto"><strong>Ana Mora Solís <small>10:04</small></strong><span>Sí, tenemos disponible en S, M y L.</span></div>
-        </div>
-        <div class="adm-conversacion">
-            <span class="adm-avatar">S</span>
-            <div class="adm-conversacion__texto"><strong>Sofía Castro Brenes <small>09:51</small></strong><span>Consulta sobre un cambio de talla</span></div>
-            <span class="adm-nav__contador" style="align-self: center;">1</span>
-        </div>
-        <div class="adm-conversacion">
-            <span class="adm-avatar">M</span>
-            <div class="adm-conversacion__texto"><strong>María Quesada Arias <small>ayer</small></strong><span>¿Hacen envíos a Cartago?</span></div>
-            <span class="adm-nav__contador" style="align-self: center;">1</span>
-        </div>
-    </div>
-
-    <div class="adm-chat__panel">
-        <div class="adm-panel__cabecera">
-            <div class="adm-producto-celda">
-                <span class="adm-avatar">A</span>
-                <div><strong>Ana Mora Solís</strong><small>Cliente &middot; <span class="adm-mono">U-0001</span></small></div>
-            </div>
-            <span class="adm-estado adm-estado--exito">En línea</span>
-        </div>
-        <div class="adm-chat__mensajes">
-            <div class="adm-mensaje adm-mensaje--propio">¡Hola! Soy Laura, de BellasBoutique. ¿En qué le puedo ayudar?<small>10:02</small></div>
-            <div class="adm-mensaje adm-mensaje--otro">Hola, ¿el vestido floral viene en talla M?<small>10:03</small></div>
-            <div class="adm-mensaje adm-mensaje--propio">Sí, tenemos disponible en S, M y L.<small>10:04</small></div>
-        </div>
-        <form class="adm-chat__escribir" method="post">
-            @Html.AntiForgeryToken()
-            <input class="adm-input" type="text" name="mensaje" required placeholder="Escriba una respuesta..." aria-label="Mensaje" />
-            <button class="adm-btn adm-btn--primario" type="submit">Enviar</button>
-        </form>
-    </div>
-</section>
+@{var clientes=(List<BellasBoutique.Web.Models.Demo.UsuarioDemo>)ViewBag.Clientes;var cliente=ViewBag.Cliente as BellasBoutique.Web.Models.Demo.UsuarioDemo;}
+<div class="adm-titulo"><div><h1>Chat con clientes</h1><p>@clientes.Count clientes</p></div></div>
+<section class="adm-panel adm-chat"><div class="adm-conversaciones"><div class="adm-buscador"><input id="buscarCliente" class="adm-input" type="search" placeholder="Buscar cliente" /></div>
+@foreach(var c in clientes){<a class="adm-conversacion @(cliente?.Id==c.Id?"activo":"")" href="/Administracion/Soporte/Chat?id=@c.Id"><span class="adm-avatar">@c.Nombre.Substring(0,1)</span><div class="adm-conversacion__texto"><strong>@c.NombreCompleto</strong><span>@c.Codigo</span></div></a>}
+</div><div class="adm-chat__panel">@if(cliente!=null){<div class="adm-panel__cabecera"><strong>@cliente.NombreCompleto</strong></div><div class="adm-chat__mensajes" id="mensajes"></div><form class="adm-chat__escribir" method="post">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@cliente.Id"/><input class="adm-input" name="mensaje" required maxlength="1000" placeholder="Escriba una respuesta..."/><button class="adm-btn adm-btn--primario" type="submit">Enviar</button></form>}else{<p>No hay clientes registrados.</p>}</div></section>
+<script src="/js/chat.js"></script>
+@if(cliente!=null){<script>cargarChat('/Administracion/Soporte/Mensajes?id=@cliente.Id',@(Context.Session.GetInt32("UsuarioId")??0),'adm');</script>}
+<script>document.getElementById('buscarCliente').oninput=function(){document.querySelectorAll('.adm-conversacion').forEach(a=>a.hidden=!a.textContent.toLowerCase().includes(this.value.toLowerCase()));};</script>

@@ -25,6 +25,7 @@
 
     <form class="bb-carrito" method="post">
         @Html.AntiForgeryToken()
+        <div>
             <h2 class="bb-subtitulo">Método de pago</h2>
             <div class="bb-metodos-pago">
                 <label class="bb-metodo-pago">
@@ -47,9 +48,10 @@
             <h2 class="bb-subtitulo">Dirección de entrega</h2>
             <div class="bb-campo">
                 <label for="direccion">Dirección</label>
-                <textarea id="direccion" name="direccion" rows="3">San Pedro, Montes de Oca</textarea>
+                <textarea id="direccion" name="direccion" rows="3">@ViewBag.Direccion</textarea>
             </div>
 
+        </div>
         <aside>
             <div class="bb-totales">
                 <h3>Resumen</h3>
@@ -57,7 +59,7 @@
                 <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
                 <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
             </div>
-            <button class="bb-btn bb-btn--bloque" type="submit" style="margin-top: 16px;">Pagar y generar factura</button>
+            <label for="estado">Resultado del pago (simulación)</label><select id="estado" name="estado"><option>Exitoso</option><option>Fallido</option><option>Pendiente</option></select><button class="bb-btn bb-btn--bloque" type="submit" style="margin-top: 16px;">Pagar y generar factura</button>
             <a class="bb-btn bb-btn--borde bb-btn--bloque" href="/Carrito" style="margin-top: 10px;">Volver al carrito</a>
         </aside>
     </form>

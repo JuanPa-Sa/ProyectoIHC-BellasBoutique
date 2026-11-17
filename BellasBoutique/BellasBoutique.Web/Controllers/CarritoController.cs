@@ -1,24 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using BellasBoutique.Web.Data;
 using BellasBoutique.Web.Models.Demo;
+using BellasBoutique.Web.Services;
 namespace BellasBoutique.Web.Controllers;
-public class CarritoController(TiendaDb db):Controller
-{
-    public IActionResult Index()=>View(HttpContext.Session.ObtenerCarrito());
-    [HttpPost,ValidateAntiForgeryToken] public IActionResult Agregar(int id,int cantidad=1)
-    {var p=db.ProductoPorId(id);if(p==null||!p.Activo||p.Stock<1){TempData["Aviso"]="Producto no disponible.";return RedirectToAction("Index","Catalogo");}
-      var items=HttpContext.Session.ObtenerCarrito();var i=items.FirstOrDefault(x=>x.ProductoId==id);var nueva=Math.Max(1,cantidad)+(i?.Cantidad??0);if(nueva>p.Stock){TempData["Aviso"]="No hay suficientes unidades.";return RedirectToAction("Index","Catalogo");}
-      if(i==null)items.Add(new ItemDemo{ProductoId=p.Id,Nombre=p.Nombre,Categoria=p.Categoria,Precio=p.Precio,Cantidad=nueva,Imagen=p.Imagen});else i.Cantidad=nueva;
-      HttpContext.Session.GuardarCarrito(items);return RedirectToAction(nameof(Index));}
-    [HttpPost,ValidateAntiForgeryToken] public IActionResult Quitar(int id){var items=HttpContext.Session.ObtenerCarrito();items.RemoveAll(x=>x.ProductoId==id);HttpContext.Session.GuardarCarrito(items);return RedirectToAction(nameof(Index));}
-    [HttpPost,ValidateAntiForgeryToken] public IActionResult Cantidad(int id,int cantidad){var items=HttpContext.Session.ObtenerCarrito();var item=items.FirstOrDefault(x=>x.ProductoId==id);if(item!=null){var p=db.ProductoPorId(id);if(p==null||p.Stock<=0)items.Remove(item);else item.Cantidad=Math.Clamp(cantidad,1,p.Stock);}HttpContext.Session.GuardarCarrito(items);return RedirectToAction(nameof(Index));}
-    [HttpGet] public IActionResult ConfirmarCompra(){var items=HttpContext.Session.ObtenerCarrito();if(items.Count==0)return RedirectToAction(nameof(Index));return View(items);}
-    [HttpPost,ValidateAntiForgeryToken] public IActionResult ConfirmarCompra(string metodo,string direccion)
-    {var items=HttpContext.Session.ObtenerCarrito();if(items.Count==0)return RedirectToAction(nameof(Index));
-      if(!new[]{"Tarjeta","SINPE","Transferencia"}.Contains(metodo)||string.IsNullOrWhiteSpace(direccion)){TempData["Aviso"]="Elegí un pago y una dirección.";return RedirectToAction(nameof(ConfirmarCompra));}
-      // Compra demostrativa: el stock sí cambia en SQL; no se almacena ningún pago ni venta.
-      if(!db.DescontarStock(items)){TempData["Aviso"]="El stock cambió; revisá el carrito.";return RedirectToAction(nameof(Index));}
-      var id=HttpContext.Session.GetInt32("UsuarioId");var u=id.HasValue?db.UsuarioPorId(id.Value):null;
-      HttpContext.Session.GuardarFactura(new FacturaDemo{Numero=Random.Shared.Next(1000,9999),Cliente=u?.NombreCompleto??"Cliente de prueba",Correo=u?.Correo??"demo@bellasboutique.local",Detalle=items,Metodo=metodo,Direccion=direccion,Fecha=DateTime.Now});
-      HttpContext.Session.GuardarCarrito(new());return RedirectToAction("Detalle","Factura");}
+public class CarritoController(TiendaDb db,CorreoService correo):Controller {
+ private int U=>HttpContext.Session.GetInt32("UsuarioId")??0;
+ private List<ItemDemo> Items()=>db.Carrito(U);
+ private void Save(List<ItemDemo> items){db.GuardarCarrito(U,items);HttpContext.Session.GuardarCarrito(items);}
+ public IActionResult Index()=>View(Items());
+ [HttpPost,ValidateAntiForgeryToken] public IActionResult Agregar(int id,int cantidad=1){var p=db.ProductoPorId(id);var items=Items();var i=items.FirstOrDefault(x=>x.ProductoId==id);if(p==null||!p.Activo||cantidad<1||cantidad>p.Stock-(i?.Cantidad??0)){TempData["Aviso"]="No hay suficientes unidades.";return RedirectToAction("Index","Catalogo");}if(i==null)items.Add(new(){ProductoId=p.Id,Nombre=p.Nombre,Categoria=p.Categoria,Precio=p.Precio,Cantidad=cantidad,Imagen=p.Imagen});else i.Cantidad+=cantidad;Save(items);return RedirectToAction(nameof(Index));}
+ [HttpPost,ValidateAntiForgeryToken] public IActionResult Quitar(int id){var items=Items();items.RemoveAll(x=>x.ProductoId==id);Save(items);return RedirectToAction(nameof(Index));}
+ [HttpPost,ValidateAntiForgeryToken] public IActionResult Cantidad(int id,int cantidad){var items=Items();var i=items.FirstOrDefault(x=>x.ProductoId==id);var p=db.ProductoPorId(id);if(i!=null&&p!=null&&p.Activo&&cantidad>0&&cantidad<=p.Stock)i.Cantidad=cantidad;else TempData["Aviso"]="Cantidad inválida o stock insuficiente.";Save(items);return RedirectToAction(nameof(Index));}
+ [HttpGet] public IActionResult ConfirmarCompra(){var items=Items();if(items.Count==0)return RedirectToAction(nameof(Index));ViewBag.Direccion=db.UsuarioPorId(U)?.Direccion;return View(items);}
+ [HttpPost,ValidateAntiForgeryToken] public IActionResult ConfirmarCompra(string metodo,string direccion,string estado="Exitoso"){if(!new[]{"Tarjeta","SINPE","Transferencia"}.Contains(metodo)||!new[]{"Exitoso","Fallido","Pendiente"}.Contains(estado)||string.IsNullOrWhiteSpace(direccion)||direccion.Length>350){TempData["Aviso"]="Revisá el pago y la dirección.";return RedirectToAction(nameof(ConfirmarCompra));}var u=db.UsuarioPorId(U)!;int id;try{id=db.Comprar(u,metodo,direccion,estado);}catch(InvalidOperationException e){TempData["Aviso"]=e.Message;return RedirectToAction(nameof(Index));}if(id==0){TempData["Aviso"]="Pago simulado: "+estado+". Podés intentar nuevamente.";return RedirectToAction(nameof(ConfirmarCompra));}HttpContext.Session.GuardarCarrito(new());var f=db.Factura(U,id)!;try{correo.Enviar(u.Correo,"Confirmación de compra",$"Factura F-{id:0000}\nDirección: {direccion}\n"+string.Join("\n",f.Detalle.Select(i=>$"{i.Nombre} x{i.Cantidad}: {i.Precio*i.Cantidad:N2}"))+$"\nSubtotal: {f.Subtotal:N2}\nIVA: {f.Impuesto:N2}\nTotal: {f.Total:N2}");}catch(Exception){TempData["Aviso"]="Compra registrada; no se pudo entregar el correo.";}return RedirectToAction("Detalle","Factura",new{id});}
 }

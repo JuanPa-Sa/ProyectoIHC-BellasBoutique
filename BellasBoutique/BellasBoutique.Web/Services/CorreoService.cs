@@ -1,2 +1,4 @@
-/* Responsable: Joel
-   Correo de confirmación de compra con la factura y la dirección de entrega (req. 8b). También lo usa Recuperar contraseña. */
+namespace BellasBoutique.Web.Services;
+public class CorreoService(IWebHostEnvironment env,IConfiguration config){
+ public void Enviar(string correo,string asunto,string cuerpo){var host=config["Correo:Host"];if(!string.IsNullOrWhiteSpace(host)){using var smtp=new System.Net.Mail.SmtpClient(host,int.TryParse(config["Correo:Puerto"],out var puerto)?puerto:587);smtp.EnableSsl=true;smtp.Credentials=new System.Net.NetworkCredential(config["Correo:Usuario"],config["Correo:Clave"]);smtp.Send(config["Correo:Remitente"]!,correo,asunto,cuerpo);return;}var dir=Path.Combine(env.ContentRootPath,"CorreosDemo");Directory.CreateDirectory(dir);System.IO.File.WriteAllText(Path.Combine(dir,DateTime.Now.ToString("yyyyMMddHHmmssfff")+"-"+Guid.NewGuid().ToString("N")+".txt"),$"Para: {correo}\nAsunto: {asunto}\n\n{cuerpo}");}
+}

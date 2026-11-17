@@ -47,9 +47,9 @@
 
             <div class="adm-grupo">Usuarios</div>
             <ul class="adm-nav">
-                <li><a href="/Administracion/Usuarios" class="@(menu == "Usuarios" ? "activo" : null)">
+                @if(Context.Session.GetString("Rol")=="Administrador"){<li><a href="/Administracion/Usuarios" class="@(menu == "Usuarios" ? "activo" : null)">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5" /><path d="M2.5 20c0-3.5 3-5.5 6.5-5.5s6.5 2 6.5 5.5" /><path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14.8c2.2.6 3.5 2.4 3.5 5.2" /></svg>
-                    Usuarios y roles</a></li>
+                    Usuarios y roles</a></li>}
                 <li><a href="/Administracion/Bitacora" class="@(menu == "Bitacora" ? "activo" : null)">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
                     Bitácora</a></li>
@@ -59,15 +59,15 @@
             <ul class="adm-nav">
                 <li><a href="/Administracion/Soporte" class="@(menu == "Soporte" ? "activo" : null)">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z" /></svg>
-                    Chat con clientes <span class="adm-nav__contador">2</span></a></li>
-            </ul>
+                    Chat con clientes</a></li>
+            @if(Context.Session.GetString("Rol")=="Administrador"){<li><a href="/Administracion/Soporte/Feedback">Sugerencias y encuestas</a></li>}</ul>
 
             <div class="adm-grupo">Cuenta</div>
             <ul class="adm-nav">
                 <li><a href="/">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10l9-7 9 7v10H3z" /><path d="M9 20v-6h6v6" /></svg>
                     Ver tienda</a></li>
-                <li><a href="/Cuenta/Salir">
+                <li><a href="/Perfil">Mi perfil</a></li><li><a href="/Cuenta/Salir">
                     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4v16h-4" /><path d="M10 8l-4 4 4 4M6 12h10" /></svg>
                     Cerrar sesión</a></li>
             </ul>
@@ -78,10 +78,10 @@
                 <div class="adm-migas">Panel<span><strong>@ViewData["Migas"]</strong></span></div>
                 <div class="adm-barra__derecha">
                     <span class="adm-sesion" title="La sesión se cierra tras 5 minutos de inactividad">Sesión 05:00</span>
-                    <span class="adm-rol">Administrador</span>
+                    <span class="adm-rol">@(Context.Session.GetString("Rol"))</span>
                     <div class="adm-usuario">
-                        <span class="adm-avatar">CV</span>
-                        <span>Carlos Vargas</span>
+                        <span class="adm-avatar">BB</span>
+                        <span>@(Context.Session.GetString("Nombre"))</span>
                     </div>
                 </div>
             </header>
@@ -94,5 +94,6 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+@if(Context.Session.GetInt32("UsuarioId").HasValue){<form id="actividadSesion" style="display:none">@Html.AntiForgeryToken()</form><script src="/js/sesion.js"></script>}
 </body>
 </html>

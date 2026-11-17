@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;using BellasBoutique.Web.Data;using BellasBoutique.Web.Models.Demo;using BellasBoutique.Web.Services;
 namespace BellasBoutique.Web.Areas.Administracion.Controllers;
-[Area("Administracion")]
-public class ReportesController(IWebHostEnvironment env):Controller
-{
-    public IActionResult Index()=>View();
-    public IActionResult FinDelDia()=>View();
-    public IActionResult Descargar(string tipo="diario")
-    {if(!new[]{"diario","mensual","fin"}.Contains(tipo))tipo="diario";var ruta=Path.Combine(env.WebRootPath,"reportes","BellasBoutique_Reporte_"+tipo+".pdf");return PhysicalFile(ruta,"application/pdf","BellasBoutique_Reporte_"+tipo+".pdf");}
+[Area("Administracion")] public class ReportesController(TiendaDb db):Controller{
+ List<VentaFila> Periodo(string tipo,DateTime fecha){var inicio=tipo=="mensual"?new DateTime(fecha.Year,fecha.Month,1):fecha.Date;var fin=tipo=="mensual"?inicio.AddMonths(1):inicio.AddDays(1);return db.Ventas().Where(v=>v.FechaReal>=inicio&&v.FechaReal<fin).ToList();}
+ public IActionResult Index(string tipo="diario",DateTime? fecha=null){ViewBag.Tipo=tipo;ViewBag.Fecha=fecha??DateTime.Today;return View(Periodo(tipo,fecha??DateTime.Today));}
+ public IActionResult FinDelDia(){ViewBag.Ventas=Periodo("diario",DateTime.Today);return View(db.Productos().Where(p=>p.Stock<=3).ToList());}
+ public IActionResult Descargar(string tipo="diario",DateTime? fecha=null){if(tipo is not ("diario" or "mensual" or "fin"))tipo="diario";var f=tipo=="fin"?DateTime.Today:fecha??DateTime.Today;var v=Periodo(tipo,f);var lineas=new List<string>{"Periodo: "+(tipo=="mensual"?f.ToString("MM/yyyy"):f.ToString("dd/MM/yyyy")),"Productos vendidos: "+v.Sum(x=>x.Cantidad),"Ingresos antes de IVA: CRC "+v.Sum(x=>x.Cantidad*x.Precio).ToString("N2"),"", "Detalle por producto"};foreach(var g in v.GroupBy(x=>x.Producto))lineas.Add($"{g.Key} | {g.Sum(x=>x.Cantidad)} unidades | CRC {g.Sum(x=>x.Precio*x.Cantidad):N2}");if(tipo=="fin"){lineas.Add("");lineas.Add("Productos con stock bajo (3 o menos)");foreach(var p in db.Productos().Where(p=>p.Stock<=3))lineas.Add($"{p.Nombre} | {p.Stock} unidades");}return File(PdfReporte.Crear("Reporte "+tipo,lineas),"application/pdf",$"BellasBoutique_{tipo}_{f:yyyyMMdd}.pdf");}
 }

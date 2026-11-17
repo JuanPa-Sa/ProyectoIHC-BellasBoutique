@@ -6,13 +6,8 @@
     ViewData["Migas"] = "Reportes";
     ViewData["Pestana"] = "Diario";
 
-    // Datos de ejemplo para ver el diseño.
-    var filas = new[]
-    {
-        new { Producto = "Vestido floral",      Categoria = "Ropa",       Cantidad = 6, Ingresos = 147000m },
-        new { Producto = "Sandalias trenzadas", Categoria = "Calzado",    Cantidad = 4, Ingresos = 84000m },
-        new { Producto = "Aretes de perla",     Categoria = "Accesorios", Cantidad = 8, Ingresos = 60000m }
-    };
+    // Datos de SQL Server.
+    var filas = ((List<BellasBoutique.Web.Models.Demo.VentaFila>)Model).GroupBy(v=>new{v.Producto,v.Categoria}).Select(g=>new{g.Key.Producto,g.Key.Categoria,Cantidad=g.Sum(v=>v.Cantidad),Ingresos=g.Sum(v=>v.Precio*v.Cantidad)}).ToArray();
     var total = filas.Sum(f => f.Ingresos);
 }
 
@@ -22,8 +17,8 @@
         <p>Productos vendidos e ingresos generados por periodo.</p>
     </div>
     <div style="display: flex; gap: 8px;">
-        <select id="tipoReporte" class="adm-input adm-input--auto" aria-label="Periodo"><option>Diario</option><option>Mensual</option></select>
-        <input class="adm-input adm-input--auto" type="date" aria-label="Fecha" />
+        <select id="tipoReporte" class="adm-input adm-input--auto" aria-label="Periodo"><option value="diario" selected="@((string)ViewBag.Tipo!="mensual")">Diario</option><option value="mensual" selected="@((string)ViewBag.Tipo=="mensual")">Mensual</option></select>
+        <input id="fechaReporte" class="adm-input adm-input--auto" type="date" aria-label="Fecha" value="@(((DateTime)ViewBag.Fecha).ToString("yyyy-MM-dd"))" />
     </div>
 </div>
 
@@ -60,7 +55,7 @@
             <tbody>
                 @foreach (var f in filas)
                 {
-                    var porcentaje = (int)Math.Round(f.Ingresos * 100 / total);
+                    var porcentaje = total==0?0:(int)Math.Round(f.Ingresos * 100 / total);
                     <tr>
                         <td>@f.Producto</td>
                         <td>@f.Categoria</td>
@@ -79,5 +74,5 @@
     </div>
 </section>
 
-<div class="adm-form-acciones" style="margin:24px 0"><a class="adm-btn adm-btn--acento" href="/Administracion/Reportes/Descargar?tipo=diario" id="descargarReporte">Generar y descargar PDF</a></div>
-<script>document.getElementById('tipoReporte')?.addEventListener('change', function(){ document.getElementById('descargarReporte').href='/Administracion/Reportes/Descargar?tipo='+ (this.value==='Mensual'?'mensual':'diario');});</script>
+<div class="adm-form-acciones" style="margin:24px 0"><a class="adm-btn adm-btn--acento" href="/Administracion/Reportes/Descargar?tipo=@ViewBag.Tipo&fecha=@(((DateTime)ViewBag.Fecha).ToString("yyyy-MM-dd"))" id="descargarReporte">Generar y descargar PDF</a></div>
+<script>const cambiar=()=>location.href='/Administracion/Reportes?tipo='+document.getElementById('tipoReporte').value+'&fecha='+document.getElementById('fechaReporte').value;document.getElementById('tipoReporte').onchange=cambiar;document.getElementById('fechaReporte').onchange=cambiar;</script>

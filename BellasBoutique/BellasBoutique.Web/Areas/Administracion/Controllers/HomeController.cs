@@ -1,11 +1,3 @@
-/* Responsable: Joel
-   Página de inicio de la vista Administración. */
-using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc;using BellasBoutique.Web.Data;
 namespace BellasBoutique.Web.Areas.Administracion.Controllers;
-
-[Area("Administracion")]
-public class HomeController : Controller
-{
-    public IActionResult Index() => View();
-}
+[Area("Administracion")] public class HomeController(TiendaDb db):Controller{public IActionResult Index(string periodo="semana"){ViewBag.Ventas=db.Ventas();ViewBag.Pagos=db.Pagos();ViewBag.Stock=db.Productos().Where(p=>p.Stock<=3).ToList();ViewBag.Periodo=periodo;return View();}}

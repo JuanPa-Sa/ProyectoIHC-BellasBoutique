@@ -1,0 +1,3 @@
+@model List<BellasBoutique.Web.Models.Demo.FeedbackFila>
+@{ViewData["Title"]="Retroalimentación";ViewData["Menu"]="Soporte";ViewData["Migas"]="Sugerencias y encuestas";}
+<div class="adm-titulo"><div><h1>Sugerencias y encuestas</h1><p>Comentarios de los usuarios</p></div></div><section class="adm-panel"><div class="adm-tabla-contenedor"><table class="adm-tabla"><thead><tr><th>Fecha</th><th>Usuario</th><th>Tipo</th><th>Puntaje</th><th>Comentario</th></tr></thead><tbody>@foreach(var f in Model){<tr><td>@f.Fecha.ToString("dd/MM/yyyy HH:mm")</td><td>@f.Usuario</td><td>@(f.Puntaje.HasValue?"Encuesta":"Sugerencia")</td><td>@f.Puntaje</td><td>@f.Texto</td></tr>}</tbody></table></div></section>

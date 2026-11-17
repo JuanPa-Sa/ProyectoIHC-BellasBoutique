@@ -23,11 +23,11 @@ public class UsuarioDemo
     public string Correo {get;set;} = "";
     public string Telefono {get;set;} = "";
     public string Direccion {get;set;} = "";
-    public string Contrasena {get;set;} = ""; // EXCLUSIVAMENTE PARA DEMOSTRACIÓN LOCAL
+    public string Contrasena {get;set;} = "";
     public string Rol {get;set;} = "Cliente";
     public bool Activo {get;set;} = true;
     public string NombreCompleto => $"{Nombre} {Apellidos}".Trim();
-    public string Ultimo => "16/11/2026 10:15";
+    public string Ultimo {get;set;} = "Sin acceso";
 }
 public class ItemDemo
 {
@@ -48,4 +48,6 @@ public class FacturaDemo
     public DateTime Fecha {get;set;} = DateTime.Now;
     public List<ItemDemo> Detalle {get;set;} = new();
     public decimal Subtotal => Detalle.Sum(x => x.Precio*x.Cantidad);
+    public decimal Impuesto => Math.Round(Subtotal*.13m,2,MidpointRounding.AwayFromZero);
+    public decimal Total => Subtotal+Impuesto;
 }

@@ -1,11 +1,3 @@
-/* Responsable: Joel
-   Historial de ventas (módulo 5). */
-using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc;using BellasBoutique.Web.Data;
 namespace BellasBoutique.Web.Areas.Administracion.Controllers;
-
-[Area("Administracion")]
-public class VentasController : Controller
-{
-    public IActionResult Index() => View();
-}
+[Area("Administracion")] public class VentasController(TiendaDb db):Controller{public IActionResult Index()=>View(db.Ventas());}

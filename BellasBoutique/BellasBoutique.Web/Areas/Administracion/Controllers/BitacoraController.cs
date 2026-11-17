@@ -1,11 +1,3 @@
-/* Responsable: Juan Pablo
-   Bitácora de actividades: altas, bajas, modificaciones y compras (req. 8c). */
-using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc;using BellasBoutique.Web.Data;
 namespace BellasBoutique.Web.Areas.Administracion.Controllers;
-
-[Area("Administracion")]
-public class BitacoraController : Controller
-{
-    public IActionResult Index() => View();
-}
+[Area("Administracion")] public class BitacoraController(TiendaDb db):Controller{public IActionResult Index()=>View(db.Bitacora());}

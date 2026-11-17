@@ -1,51 +1,31 @@
-BELLASBOUTIQUE - GRUPO 3 / PROYECTO IHC
-======================================
-Proyecto de demostración local para ASP.NET Core MVC y SQL Server.
+BELLASBOUTIQUE — Proyecto IHC / Grupo 3
 
-PASOS DE INSTALACIÓN
-1. Abrir SQL Server Management Studio (SSMS) y conectarse a la instancia local.
-2. Abrir SQL/BellasBoutique_BD.sql y ejecutar TODO con F5.
-   El script crea BellasBoutiqueUIA, las tablas Usuarios y Productos y datos de prueba.
-3. Abrir BellasBoutique.sln en Visual Studio con SDK .NET 10 instalado.
-4. En BellasBoutique.Web/appsettings.json cambiar la cadena de conexión si su servidor
-   no se llama localhost. Para SQLEXPRESS usar Server=.\\SQLEXPRESS; y conservar
-   Trusted_Connection=True;TrustServerCertificate=True;
-5. Ejecutar la aplicación con HTTPS desde Visual Studio.
-6. El archivo usa Microsoft.Data.SqlClient (restauración automática de NuGet).
+INSTALACIÓN
+1. En SSMS ejecutar SQL/BellasBoutique_BD.sql completo. Si ya existe BellasBoutiqueUIA, el script agrega tablas y conserva usuarios/productos. Hacer respaldo antes. No borra datos. Las contraseñas antiguas en texto plano se convierten a hash al iniciar la app. Las imágenes URL se aplican si el campo está vacío.
+2. En BellasBoutique.Web/appsettings.json ajustar Server=localhost si tu instancia se llama de otra forma (ej. .\SQLEXPRESS, con doble barra en JSON). Autenticación de Windows por defecto.
+3. Abrir BellasBoutique.sln en Visual Studio con SDK .NET 10 y restaurar NuGet. Ejecutar por HTTPS.
 
-USUARIOS INICIALES
-AdminUIA       / 123456789   / Administrador
-vendedorUIA    / 123456789   / Vendedor
-clienteUIA     / 123456789   / Cliente
-Se puede iniciar sesión con nombre de usuario o correo.
+ACCESO INICIAL (base nueva; si ya cambiaste una clave se conserva):
+AdminUIA / admin@bellasboutique.local
+vendedorUIA / vendedor@bellasboutique.local
+clienteUIA / cliente@bellasboutique.local
+Clave inicial de los tres: 123456789. Los nuevos registros requieren clave fuerte.
 
-FUNCIONES QUE SÍ UTILIZAN SQL SERVER
-- Registro / inicio de sesión y perfil de usuarios.
-- Usuarios y roles (administración).
-- Productos: alta, modificación, ajuste de stock, baja lógica.
-- Imagen de producto: URL o imagen local en wwwroot/images/productos.
-- Catálogo real con filtro por categoría.
-- Compras de demostración descuentan unidades en stock (sin registrar ventas).
+PRUEBAS PROPUESTAS (todavía no ejecutadas en SQL Server ni .NET):
+- Iniciar sesión con los tres roles, probar clave incorrecta y revisar dbo.IntentosLogin.
+- Registrar cliente con clave fuerte, verificar dbo.Clientes y editar perfil.
+- Crear/modificar/retirar producto, probar URL o archivo y verificar bitácora.
+- Cliente agrega productos, cierra sesión y vuelve a entrar: el carrito debe mantenerse.
+- Simular pago fallido y pendiente (sin descontar stock); luego exitoso (descuenta stock y crea factura, pago y ventas). Validar IVA 13%.
+- Abrir ventas, reportes diario/mensual y fin de día, descargar PDF dinámico y revisar bitácora.
+- Abrir dos navegadores/perfiles (cliente y vendedor), enviar y recibir mensajes; actualización cada 2.5 segundos.
+- Enviar encuesta y sugerencia, abrir Sugerencias y encuestas como administrador.
+- Recuperar contraseña (la clave cambia): consultar archivo de correo en BellasBoutique.Web/CorreosDemo si SMTP no está configurado. Probar nueva clave y confirmar que la antigua no funciona.
+- Comprar y revisar otro correo con factura y dirección.
+- Dejar sesión sin interacción durante 5 minutos y comprobar salida.
 
-FUNCIONES SIMULADAS, A PROPÓSITO
-- Carrito y factura viven en la sesión del navegador (no se registran en BD).
-- Pago Tarjeta / SINPE / Transferencia siempre se aprueba; nunca conecta al banco.
-- Los reportes diarios, mensuales y cierre son PDFs fijos precargados.
-- Las ventas e indicadores administrativos visibles son datos de demostración.
-- Chat del cliente y vendedor no persiste mensajes: respuesta fija
-  "Aqui iria el bot funcional".
-- Sugerencias, encuestas y recuperar contraseña confirman sin guardar/enviar.
-- Bitácora contiene ejemplos estáticos, no audita acciones reales.
-- Correo de factura solo muestra mensaje de simulación.
+ALCANCE
+Pagos son simulados, pero se guardan en SQL. No se realizan cobros reales. Se guarda un historial de intentos de pago; si se reintenta uno pendiente se marca fallido (simplificación académica). Ingresos de venta mostrados antes de IVA. Stock bajo <=3. Reportes PDF generados en tiempo real con diseño sencillo, sin paquetes PDF. Chat usa polling SQL, no SignalR. Correos por defecto se guardan como .txt fuera de wwwroot (no se envían a Internet). Para envío SMTP real, configurar Correo:Host, Puerto, Usuario, Clave y Remitente (preferible secretos de usuario o variables de entorno; no guardar claves reales en repositorio). No se ha probado SMTP real. Buzón local solo accesible al operador del equipo. Los enlaces externos de imágenes pueden dejar de funcionar. No publicar como comercio real sin revisión de seguridad.
 
-NOTAS
-- El proyecto contiene contraseñas EN TEXTO PLANO únicamente para esta
-  demostración local educativa. NO publicarlo en Internet ni reutilizar cuentas.
-- Se mantienen los archivos CSS y la estructura original de diseño. Solo se
-  cambiaron los formularios/vistas para conectarlos a las acciones del backend.
-- Se omiten los archivos de tipografías originales del ZIP generado. Para
-  conservar exactamente las tipografías, copiar la carpeta wwwroot/fonts
-  de tu ZIP original BellasBoutique.zip a esta solución antes de ejecutarla.
-- Requiere .NET 10 SDK, SQL Server y acceso a NuGet para restaurar dependencias.
-- Esta entrega no se pudo compilar en el entorno de generación porque no
-  estaba instalado el SDK .NET. Probar compilación en Visual Studio.
+VALIDACIÓN
+Revisión estática y empaquetado. No hay SDK .NET ni SQL Server en el entorno de preparación; se requiere compilar y probar localmente. No se garantiza ejecución sin ajustes.

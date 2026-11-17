@@ -6,13 +6,9 @@
     ViewData["Migas"] = "Reportes / Final del día";
     ViewData["Pestana"] = "FinDelDia";
 
-    // Datos de ejemplo para ver el diseño.
-    var stockBajo = new[]
-    {
-        new { Codigo = "P-0003", Producto = "Sandalias trenzadas", Categoria = "Calzado", Stock = 1 },
-        new { Codigo = "P-0002", Producto = "Blusa de lino",       Categoria = "Ropa",    Stock = 2 },
-        new { Codigo = "P-0004", Producto = "Tacones nude",        Categoria = "Calzado", Stock = 3 }
-    };
+    // Datos de SQL Server.
+    var stockBajo=((List<BellasBoutique.Web.Models.Demo.ProductoDemo>)Model).ToArray();
+    var ventas=(List<BellasBoutique.Web.Models.Demo.VentaFila>)ViewBag.Ventas;
 }
 
 <div class="adm-titulo">
@@ -28,11 +24,11 @@
 <div class="adm-kpis" style="grid-template-columns: repeat(3, 1fr);">
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Productos vendidos</div>
-        <div class="adm-kpi__valor">18</div>
+        <div class="adm-kpi__valor">@ventas.Sum(v=>v.Cantidad)</div>
     </div>
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Ingresos por ventas</div>
-        <div class="adm-kpi__valor">₡312 400</div>
+        <div class="adm-kpi__valor">₡@(ventas.Sum(v=>v.Precio*v.Cantidad).ToString("N0"))</div>
     </div>
     <div class="adm-kpi">
         <div class="adm-kpi__etiqueta">Productos con stock bajo</div>
@@ -59,7 +55,7 @@
                 {
                     <tr>
                         <td class="adm-mono">@s.Codigo</td>
-                        <td>@s.Producto</td>
+                        <td>@s.Nombre</td>
                         <td>@s.Categoria</td>
                         <td>
                             <div class="adm-stock adm-stock--bajo">

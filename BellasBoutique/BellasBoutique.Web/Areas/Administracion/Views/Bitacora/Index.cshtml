@@ -5,14 +5,8 @@
     ViewData["Menu"] = "Bitacora";
     ViewData["Migas"] = "Bitácora";
 
-    // Datos de ejemplo para ver el diseño.
-    var registros = new[]
-    {
-        new { Fecha = "14/11/2026 10:15:32", Usuario = "Ana Mora Solís",      Rol = "Cliente",       Accion = "Compra",       Detalle = "Factura F-0001 por ₡68,365" },
-        new { Fecha = "14/11/2026 09:40:05", Usuario = "Carlos Vargas Pérez", Rol = "Administrador", Accion = "Modificación", Detalle = "Stock de P-0004 Tacones nude: 5 → 3" },
-        new { Fecha = "14/11/2026 09:12:47", Usuario = "Laura Jiménez Rojas", Rol = "Vendedor",      Accion = "Alta",         Detalle = "Producto P-0006 Collar dorado" },
-        new { Fecha = "13/11/2026 17:30:11", Usuario = "Carlos Vargas Pérez", Rol = "Administrador", Accion = "Baja",         Detalle = "Cuenta U-0004 Sofía Castro Brenes" }
-    };
+    // Datos de SQL Server.
+    var registros = (List<BellasBoutique.Web.Models.Demo.BitacoraFila>)Model;
     string Clase(string a) => a switch { "Alta" => "adm-estado--exito", "Baja" => "adm-estado--error", "Modificación" => "adm-estado--info", _ => "adm-estado--acento" };
 }
 
@@ -59,5 +53,7 @@
             </tbody>
         </table>
     </div>
-    <div class="adm-pie-tabla"><span>Mostrando 1–@registros.Length de @registros.Length registros</span></div>
+    <div class="adm-pie-tabla"><span>Mostrando 1–@registros.Count de @registros.Count registros</span></div>
 </section>
+
+<script>document.addEventListener('DOMContentLoaded',()=>{const controls=[...document.querySelectorAll('.adm-herramientas input,.adm-herramientas select')];function filter(){const q=controls[0].value.toLowerCase();const dates=controls.filter(x=>x.type==='date');const sel=controls.find(x=>x.tagName==='SELECT');document.querySelectorAll('tbody tr').forEach(r=>{const parts=r.cells[0].textContent.trim().slice(0,10).split('/');const d=parts.reverse().join('-');r.hidden=!(r.textContent.toLowerCase().includes(q)&&(!sel||sel.selectedIndex===0||r.cells[3].textContent.trim()===sel.value)&&(!dates[0].value||d>=dates[0].value)&&(!dates[1].value||d<=dates[1].value));});}controls.forEach(x=>x.addEventListener('input',filter));});</script>
