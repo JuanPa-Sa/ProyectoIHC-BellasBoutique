@@ -442,3 +442,6 @@ a { color: inherit; text-decoration: none; }
     .adm-buscador { max-width: none; }
     .adm-titulo > div:last-child { flex-wrap: wrap; }
 }
+
+/* Símbolo PNG de BellasBoutique en el menú lateral de Administración. */
+.adm-marca__imagen { display: block; width: 48px; height: 48px; object-fit: contain; border-radius: 6px; background: #fff; flex-shrink: 0; }

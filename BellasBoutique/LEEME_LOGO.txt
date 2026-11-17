@@ -1,0 +1,1 @@
+Logo BellasBoutique en PNG integrado en las pantallas públicas, en acceso y en el panel de Administración.\nArchivos: BellasBoutique.Web/wwwroot/images/bellasboutique-logo.png y bellasboutique-simbolo.png.\nSe conservaron funcionalidades, rutas, controladores y SQL del ZIP funcional anterior.\n

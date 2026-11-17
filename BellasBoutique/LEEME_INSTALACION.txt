@@ -1,0 +1,51 @@
+BELLASBOUTIQUE - GRUPO 3 / PROYECTO IHC
+======================================
+Proyecto de demostración local para ASP.NET Core MVC y SQL Server.
+
+PASOS DE INSTALACIÓN
+1. Abrir SQL Server Management Studio (SSMS) y conectarse a la instancia local.
+2. Abrir SQL/BellasBoutique_BD.sql y ejecutar TODO con F5.
+   El script crea BellasBoutiqueUIA, las tablas Usuarios y Productos y datos de prueba.
+3. Abrir BellasBoutique.sln en Visual Studio con SDK .NET 10 instalado.
+4. En BellasBoutique.Web/appsettings.json cambiar la cadena de conexión si su servidor
+   no se llama localhost. Para SQLEXPRESS usar Server=.\\SQLEXPRESS; y conservar
+   Trusted_Connection=True;TrustServerCertificate=True;
+5. Ejecutar la aplicación con HTTPS desde Visual Studio.
+6. El archivo usa Microsoft.Data.SqlClient (restauración automática de NuGet).
+
+USUARIOS INICIALES
+AdminUIA       / 123456789   / Administrador
+vendedorUIA    / 123456789   / Vendedor
+clienteUIA     / 123456789   / Cliente
+Se puede iniciar sesión con nombre de usuario o correo.
+
+FUNCIONES QUE SÍ UTILIZAN SQL SERVER
+- Registro / inicio de sesión y perfil de usuarios.
+- Usuarios y roles (administración).
+- Productos: alta, modificación, ajuste de stock, baja lógica.
+- Imagen de producto: URL o imagen local en wwwroot/images/productos.
+- Catálogo real con filtro por categoría.
+- Compras de demostración descuentan unidades en stock (sin registrar ventas).
+
+FUNCIONES SIMULADAS, A PROPÓSITO
+- Carrito y factura viven en la sesión del navegador (no se registran en BD).
+- Pago Tarjeta / SINPE / Transferencia siempre se aprueba; nunca conecta al banco.
+- Los reportes diarios, mensuales y cierre son PDFs fijos precargados.
+- Las ventas e indicadores administrativos visibles son datos de demostración.
+- Chat del cliente y vendedor no persiste mensajes: respuesta fija
+  "Aqui iria el bot funcional".
+- Sugerencias, encuestas y recuperar contraseña confirman sin guardar/enviar.
+- Bitácora contiene ejemplos estáticos, no audita acciones reales.
+- Correo de factura solo muestra mensaje de simulación.
+
+NOTAS
+- El proyecto contiene contraseñas EN TEXTO PLANO únicamente para esta
+  demostración local educativa. NO publicarlo en Internet ni reutilizar cuentas.
+- Se mantienen los archivos CSS y la estructura original de diseño. Solo se
+  cambiaron los formularios/vistas para conectarlos a las acciones del backend.
+- Se omiten los archivos de tipografías originales del ZIP generado. Para
+  conservar exactamente las tipografías, copiar la carpeta wwwroot/fonts
+  de tu ZIP original BellasBoutique.zip a esta solución antes de ejecutarla.
+- Requiere .NET 10 SDK, SQL Server y acceso a NuGet para restaurar dependencias.
+- Esta entrega no se pudo compilar en el entorno de generación porque no
+  estaba instalado el SDK .NET. Probar compilación en Visual Studio.

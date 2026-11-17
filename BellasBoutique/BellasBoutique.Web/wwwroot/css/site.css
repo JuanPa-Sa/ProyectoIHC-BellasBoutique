@@ -228,9 +228,10 @@ img { max-width: 100%; display: block; }
     background: var(--bb-crema);
 }
 .bb-portada__imagen {
-    background:
-        linear-gradient(160deg, rgba(244,167,185,0.55), rgba(237,228,245,0.6) 55%, rgba(253,231,221,0.8)),
-        var(--bb-rosa-claro);
+    background-image: url('/images/portada/campana.jpg');
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .bb-portada__texto {
     display: flex;
@@ -273,9 +274,9 @@ img { max-width: 100%; display: block; }
     padding: 28px;
     overflow: hidden;
 }
-.bb-categoria--ropa       { background: linear-gradient(180deg, var(--bb-rosa-claro), #F7CFDA); }
-.bb-categoria--calzado    { background: linear-gradient(180deg, var(--bb-durazno), #F8D2C1); }
-.bb-categoria--accesorios { background: linear-gradient(180deg, var(--bb-lavanda), #DCCBEA); }
+.bb-categoria--ropa       { background: url('/images/portada/ropa.jpg') center center / cover no-repeat; }
+.bb-categoria--calzado    { background: url('/images/portada/calzado.jpg') center center / cover no-repeat; }
+.bb-categoria--accesorios { background: url('/images/portada/accesorios.jpg') center center / cover no-repeat; }
 .bb-categoria__marco {
     background: rgba(255, 255, 255, 0.92);
     padding: 16px 30px;
@@ -723,3 +724,11 @@ img { max-width: 100%; display: block; }
     .bb-tabla th, .bb-tabla td { padding-left: 6px; padding-right: 6px; }
     .bb-item__foto { display: none; }
 }
+
+/* Logo PNG BellasBoutique: encabezado, pie y pantallas de acceso. */
+.bb-logo--imagen { display: inline-flex; align-items: center; justify-content: center; max-width: 100%; line-height: normal; }
+.bb-logo--imagen img { display: block; width: 230px; max-width: 100%; height: 100px; object-fit: contain; }
+.bb-pie .bb-logo--imagen { background: #fff; border-radius: 8px; padding: 3px; }
+.bb-pie .bb-logo--imagen img { width: 185px; height: 105px; }
+.bb-acceso__panel .bb-logo--imagen img { width: 295px; height: 175px; }
+@media (max-width: 600px) { .bb-logo--imagen img { width: 162px; height: 78px; } .bb-pie .bb-logo--imagen img { width: 175px; height: 90px; } }
