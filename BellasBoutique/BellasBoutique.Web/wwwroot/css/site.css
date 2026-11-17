@@ -9,7 +9,7 @@
 /* ---------- 1. Variables ---------- */
 :root {
     /* Base */
-    --bb-tinta:        #2B2028;   /* texto principal, barra de anuncios y pie */
+    --bb-tinta:        #2B2028;   /* texto principal y pie */
     --bb-tinta-suave:  #6E6169;   /* texto secundario */
     --bb-linea:        #ECE3E6;   /* bordes finos */
     --bb-fondo:        #FFFFFF;
@@ -96,30 +96,6 @@ img { max-width: 100%; display: block; }
     height: 1px;
     margin: 16px auto 0;
     background: var(--bb-rosa-oscuro);
-}
-
-/* ---------- 3. Barra de anuncios ---------- */
-.bb-anuncio {
-    background: var(--bb-tinta);
-    color: #FFFFFF;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    padding: 10px 0;
-}
-/* La pista lleva los mensajes dos veces para que el desplazamiento no tenga cortes */
-.bb-anuncio__pista {
-    display: inline-flex;
-    animation: bb-desplazar 40s linear infinite;
-}
-.bb-anuncio__pista span { padding-right: 64px; }
-.bb-anuncio__pista span::before { content: "\2726"; margin-right: 12px; color: var(--bb-rosa); }
-@keyframes bb-desplazar { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) {
-    .bb-anuncio__pista { animation: none; padding-left: 24px; }
 }
 
 /* ---------- 4. Encabezado ---------- */

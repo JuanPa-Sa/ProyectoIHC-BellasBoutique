@@ -1,5 +1,5 @@
 @* Responsable: Joel
-   Layout de la vista Cliente (req. 8d): barra de anuncios, encabezado con logo centrado,
+   Layout de la vista Cliente (req. 8d): encabezado con logo centrado,
    menú de categorías, pie de página y botón flotante al chat de soporte.
    Cada vista indica su sección con ViewData["Menu"] para marcar el enlace activo. *@
 @{
@@ -15,19 +15,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <div class="bb-anuncio" aria-label="Anuncios">
-        <div class="bb-anuncio__pista">
-            <span>Pague con tarjeta, SINPE Móvil o transferencia</span>
-            <span>Nueva colección disponible</span>
-            <span>Factura digital en cada compra</span>
-            <span>Chat en línea con nuestras asesoras</span>
-            <span aria-hidden="true">Pague con tarjeta, SINPE Móvil o transferencia</span>
-            <span aria-hidden="true">Nueva colección disponible</span>
-            <span aria-hidden="true">Factura digital en cada compra</span>
-            <span aria-hidden="true">Chat en línea con nuestras asesoras</span>
-        </div>
-    </div>
-
     <header class="bb-encabezado">
         <div class="bb-contenedor">
             <div class="bb-encabezado__fila">
