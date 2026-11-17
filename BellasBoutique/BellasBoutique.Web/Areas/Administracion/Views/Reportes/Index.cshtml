@@ -22,7 +22,7 @@
         <p>Productos vendidos e ingresos generados por periodo.</p>
     </div>
     <div style="display: flex; gap: 8px;">
-        <select class="adm-input adm-input--auto" aria-label="Periodo"><option>Diario</option><option>Mensual</option></select>
+        <select id="tipoReporte" class="adm-input adm-input--auto" aria-label="Periodo"><option>Diario</option><option>Mensual</option></select>
         <input class="adm-input adm-input--auto" type="date" aria-label="Fecha" />
     </div>
 </div>
@@ -78,3 +78,6 @@
         </table>
     </div>
 </section>
+
+<div class="adm-form-acciones" style="margin:24px 0"><a class="adm-btn adm-btn--acento" href="/Administracion/Reportes/Descargar?tipo=diario" id="descargarReporte">Generar y descargar PDF</a></div>
+<script>document.getElementById('tipoReporte')?.addEventListener('change', function(){ document.getElementById('descargarReporte').href='/Administracion/Reportes/Descargar?tipo='+ (this.value==='Mensual'?'mensual':'diario');});</script>

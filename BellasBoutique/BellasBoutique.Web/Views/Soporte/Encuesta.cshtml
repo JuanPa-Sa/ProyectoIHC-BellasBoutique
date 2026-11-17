@@ -9,6 +9,8 @@
 
 <div class="bb-contenedor" style="padding-bottom: 88px;">
     <form class="bb-formulario" method="post">
+        @Html.AntiForgeryToken()
+        @if(ViewBag.Aviso!=null){<p role="status">@ViewBag.Aviso</p>}
         <h2 class="bb-subtitulo">¿Cómo fue su experiencia?</h2>
 
         <div class="bb-campo">
@@ -28,6 +30,6 @@
             <textarea id="comentario" name="comentario"></textarea>
         </div>
 
-        <button class="bb-btn" type="button">Enviar encuesta</button>
+        <button class="bb-btn" type="submit">Enviar encuesta</button>
     </form>
 </div>

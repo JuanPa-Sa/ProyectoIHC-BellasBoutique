@@ -4,7 +4,7 @@
     ViewData["Title"] = "Confirmar compra";
     ViewData["Menu"] = "Carrito";
 
-    var subtotal = 60500m; // Dato de ejemplo
+    var subtotal = ((List<BellasBoutique.Web.Models.Demo.ItemDemo>)Model).Sum(i=>i.Precio*i.Cantidad);
 }
 
 <section class="bb-cabecera-pagina">
@@ -16,14 +16,15 @@
 </section>
 
 <div class="bb-contenedor bb-pagina">
+    @if(TempData["Aviso"]!=null){<p role="alert">@TempData["Aviso"]</p>}
     <div class="bb-pasos">
         <span class="hecho"><b>&check;</b> Carrito</span>
         <span class="activo"><b>2</b> Pago</span>
         <span><b>3</b> Factura</span>
     </div>
 
-    <div class="bb-carrito">
-        <form method="post">
+    <form class="bb-carrito" method="post">
+        @Html.AntiForgeryToken()
             <h2 class="bb-subtitulo">Método de pago</h2>
             <div class="bb-metodos-pago">
                 <label class="bb-metodo-pago">
@@ -48,7 +49,6 @@
                 <label for="direccion">Dirección</label>
                 <textarea id="direccion" name="direccion" rows="3">San Pedro, Montes de Oca</textarea>
             </div>
-        </form>
 
         <aside>
             <div class="bb-totales">
@@ -57,8 +57,8 @@
                 <div class="bb-totales__fila"><span>Impuesto (13%)</span><span>₡@((subtotal * 0.13m).ToString("N0"))</span></div>
                 <div class="bb-totales__fila bb-totales__fila--total"><span>Total</span><span>₡@((subtotal * 1.13m).ToString("N0"))</span></div>
             </div>
-            <a class="bb-btn bb-btn--bloque" href="/Factura/Detalle" style="margin-top: 16px;">Pagar y generar factura</a>
+            <button class="bb-btn bb-btn--bloque" type="submit" style="margin-top: 16px;">Pagar y generar factura</button>
             <a class="bb-btn bb-btn--borde bb-btn--bloque" href="/Carrito" style="margin-top: 10px;">Volver al carrito</a>
         </aside>
-    </div>
+    </form>
 </div>

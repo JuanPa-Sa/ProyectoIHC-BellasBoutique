@@ -9,6 +9,8 @@
 
 <div class="bb-contenedor" style="padding-bottom: 88px;">
     <form class="bb-formulario" method="post">
+        @Html.AntiForgeryToken()
+        @if(ViewBag.Aviso!=null){<p role="status">@ViewBag.Aviso</p>}
         <h2 class="bb-subtitulo">Envíenos su sugerencia</h2>
         <p class="bb-texto-suave">La recibirá el administrador de la tienda.</p>
 
@@ -17,6 +19,6 @@
             <textarea id="sugerencia" name="sugerencia" style="min-height: 160px;"></textarea>
         </div>
 
-        <button class="bb-btn" type="button">Enviar sugerencia</button>
+        <button class="bb-btn" type="submit">Enviar sugerencia</button>
     </form>
 </div>

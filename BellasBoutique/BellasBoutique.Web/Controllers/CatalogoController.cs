@@ -1,10 +1,7 @@
-/* Responsable: Eduardo
-   Catálogo de productos con filtro por categoría y añadir al carrito (módulo 3). */
 using Microsoft.AspNetCore.Mvc;
-
+using BellasBoutique.Web.Data;
 namespace BellasBoutique.Web.Controllers;
-
-public class CatalogoController : Controller
+public class CatalogoController(TiendaDb db):Controller
 {
-    public IActionResult Index() => View();
+    public IActionResult Index(string? categoria){ViewBag.Categoria=categoria;return View(db.Productos(categoria:categoria));}
 }

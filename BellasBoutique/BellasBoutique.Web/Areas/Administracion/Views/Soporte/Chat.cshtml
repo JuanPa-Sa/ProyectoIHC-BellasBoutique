@@ -49,8 +49,9 @@
             <div class="adm-mensaje adm-mensaje--propio">Sí, tenemos disponible en S, M y L.<small>10:04</small></div>
         </div>
         <form class="adm-chat__escribir" method="post">
-            <input class="adm-input" type="text" placeholder="Escriba una respuesta..." aria-label="Mensaje" />
-            <button class="adm-btn adm-btn--primario" type="button">Enviar</button>
+            @Html.AntiForgeryToken()
+            <input class="adm-input" type="text" name="mensaje" required placeholder="Escriba una respuesta..." aria-label="Mensaje" />
+            <button class="adm-btn adm-btn--primario" type="submit">Enviar</button>
         </form>
     </div>
 </section>

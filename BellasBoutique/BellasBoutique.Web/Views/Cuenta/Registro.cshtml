@@ -6,6 +6,8 @@
 }
 
 <form class="bb-acceso__form bb-acceso__form--ancho" method="post">
+    @Html.AntiForgeryToken()
+    @if(ViewBag.Error!=null){<p role="alert" style="color:#9e284f">@ViewBag.Error</p>}
     <h1>Crear cuenta</h1>
     <p>Complete sus datos para registrarse.</p>
 
@@ -49,7 +51,7 @@
         </div>
         <div class="bb-campo">
             <label for="rol">Rol</label>
-            <select id="rol" name="rol">
+            <select id="rol" name="rol" disabled>
                 <option>Cliente</option>
                 <option>Vendedor</option>
                 <option>Administrador</option>
@@ -57,7 +59,7 @@
         </div>
     </div>
 
-    <button class="bb-btn bb-btn--bloque" type="button">Registrarme</button>
+    <button class="bb-btn bb-btn--bloque" type="submit">Registrarme</button>
 
     <div class="bb-enlaces-formulario">
         <a href="/Cuenta/Login">¿Ya tiene cuenta? Inicie sesión</a>

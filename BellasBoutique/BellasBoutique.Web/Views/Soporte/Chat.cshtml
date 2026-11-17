@@ -26,10 +26,12 @@
                 Sí, tenemos disponible en S, M y L.
                 <span class="bb-mensaje__hora">10:04</span>
             </div>
+            @if(ViewBag.Respuesta!=null){<div class="bb-mensaje bb-mensaje--propio">@ViewBag.Pregunta</div><div class="bb-mensaje bb-mensaje--otro">@ViewBag.Respuesta</div>}
         </div>
         <form class="bb-chat__escribir" method="post">
-            <input type="text" placeholder="Escriba un mensaje..." aria-label="Mensaje" />
-            <button class="bb-btn" type="button">Enviar</button>
+            @Html.AntiForgeryToken()
+            <input type="text" name="mensaje" required placeholder="Escriba un mensaje..." aria-label="Mensaje" />
+            <button class="bb-btn" type="submit">Enviar</button>
         </form>
     </div>
 </div>

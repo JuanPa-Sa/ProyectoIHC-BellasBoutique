@@ -5,15 +5,10 @@
     ViewData["Title"] = "Factura";
     ViewData["Menu"] = "Carrito";
 
-    // Datos de ejemplo para ver el diseño. Se reemplazan por la factura real.
-    var fecha = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-    var detalle = new[]
-    {
-        new { Nombre = "Vestido floral",      Precio = 24500m, Cantidad = 1 },
-        new { Nombre = "Sandalias trenzadas", Precio = 21000m, Cantidad = 1 },
-        new { Nombre = "Aretes de perla",     Precio = 7500m,  Cantidad = 2 }
-    };
-    var subtotal = detalle.Sum(d => d.Precio * d.Cantidad);
+    var factura=(BellasBoutique.Web.Models.Demo.FacturaDemo)Model;
+    var fecha=factura.Fecha.ToString("dd/MM/yyyy HH:mm");
+    var detalle=factura.Detalle;
+    var subtotal=factura.Subtotal;
 }
 
 <div class="bb-contenedor bb-pagina">
@@ -24,20 +19,20 @@
     </div>
 
     <div class="bb-factura">
-        <div class="bb-alerta bb-alerta--exito">¡Compra confirmada! Le enviamos un correo con la factura y la dirección de entrega.</div>
+        <div class="bb-alerta bb-alerta--exito">¡Compra confirmada! Simulación: se enviaría un correo con la factura y la dirección de entrega.</div>
 
         <div class="bb-factura__cabecera">
             <div>
                 <span class="bb-etiqueta">Factura digital</span>
-                <h1 style="margin: 4px 0 0;">N.º 0001</h1>
+                <h1 style="margin: 4px 0 0;">N.º @factura.Numero.ToString("0000")</h1>
             </div>
             <a class="bb-logo" href="/" style="text-align: right;">Bellas<small>Boutique</small></a>
         </div>
 
         <div class="bb-factura__datos">
-            <div><span class="bb-etiqueta">Cliente</span>Ana Mora Solís<br />ana.mora@correo.com</div>
+            <div><span class="bb-etiqueta">Cliente</span>@factura.Cliente<br />@factura.Correo</div>
             <div><span class="bb-etiqueta">Fecha de compra</span>@fecha</div>
-            <div><span class="bb-etiqueta">Pago</span>Tarjeta &middot; <span class="bb-insignia bb-insignia--exitoso">Exitoso</span></div>
+            <div><span class="bb-etiqueta">Pago</span>@factura.Metodo &middot; <span class="bb-insignia bb-insignia--exitoso">Exitoso</span></div>
         </div>
 
         <div class="bb-tabla-scroll">

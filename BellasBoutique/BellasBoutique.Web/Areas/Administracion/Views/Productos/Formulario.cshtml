@@ -4,33 +4,38 @@
     ViewData["Title"] = "Registrar producto";
     ViewData["Menu"] = "Productos";
     ViewData["Migas"] = "Productos / Registrar";
+    var p = Model as BellasBoutique.Web.Models.Demo.ProductoDemo ?? new();
 }
 
 <div class="adm-titulo">
     <div>
-        <h1>Registrar producto</h1>
+        <h1>@(p.Id==0?"Registrar producto":"Editar producto")</h1>
         <p>Este mismo formulario se usa para modificar un producto.</p>
     </div>
     <a class="adm-btn" href="/Administracion/Productos">&larr; Volver a productos</a>
 </div>
 
-<form class="adm-form" method="post">
+<form class="adm-form" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@p.Id"/>
+    <input type="hidden" name="activo" value="true"/>
+    @if(ViewBag.Error!=null){<p role="alert">@ViewBag.Error</p>}
     <section class="adm-panel" style="margin: 0;">
         <div class="adm-seccion-form">
             <h3>Información general</h3>
             <div class="adm-rejilla">
                 <div class="adm-campo">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" name="nombre" type="text" />
+                    <input id="nombre" name="nombre" value="@p.Nombre" type="text" required />
                 </div>
                 <div class="adm-campo">
                     <label for="categoria">Categoría</label>
-                    <select id="categoria" name="categoria"><option>Ropa</option><option>Calzado</option><option>Accesorios</option></select>
+                    <select id="categoria" name="categoria"><option selected="@(p.Categoria=="Ropa")">Ropa</option><option selected="@(p.Categoria=="Calzado")">Calzado</option><option selected="@(p.Categoria=="Accesorios")">Accesorios</option></select>
                 </div>
             </div>
             <div class="adm-campo">
                 <label for="descripcion">Descripción</label>
-                <textarea id="descripcion" name="descripcion"></textarea>
+                <textarea id="descripcion" name="descripcion">@p.Descripcion</textarea>
             </div>
         </div>
 
@@ -39,23 +44,23 @@
             <div class="adm-rejilla">
                 <div class="adm-campo">
                     <label for="precio">Precio (₡)</label>
-                    <input id="precio" name="precio" type="number" min="0" />
+                    <input id="precio" name="precio" value="@p.Precio.ToString(System.Globalization.CultureInfo.InvariantCulture)" type="number" step="0.01" min="0" required />
                     <span class="adm-ayuda">Sin impuesto. El 13% se suma en la factura.</span>
                 </div>
                 <div class="adm-campo">
                     <label for="stock">Stock disponible</label>
-                    <input id="stock" name="stock" type="number" min="0" />
+                    <input id="stock" name="stock" value="@p.Stock" type="number" min="0" required />
                 </div>
                 <div class="adm-campo">
                     <label for="proveedor">Proveedor</label>
-                    <input id="proveedor" name="proveedor" type="text" />
+                    <input id="proveedor" name="proveedor" value="@p.Proveedor" type="text" />
                 </div>
             </div>
         </div>
 
         <div class="adm-form-acciones">
             <a class="adm-btn" href="/Administracion/Productos">Cancelar</a>
-            <button class="adm-btn adm-btn--acento" type="button">Guardar producto</button>
+            <button class="adm-btn adm-btn--acento" type="submit">Guardar producto</button>
         </div>
     </section>
 
@@ -63,7 +68,8 @@
         <div class="adm-panel__cabecera"><h2>Imagen</h2></div>
         <div class="adm-panel__cuerpo">
             <label class="adm-subida" for="imagen">Arrastre una imagen o haga clic para elegirla<br />JPG o PNG</label>
-            <input id="imagen" name="imagen" type="file" accept="image/*" style="display: none;" />
+            <div class="adm-campo"><label for="imagenUrl">O use la URL de una imagen</label><input id="imagenUrl" name="imagen" type="url" value="@p.Imagen" placeholder="https://ejemplo.com/foto.jpg" /></div>
+            <input id="imagen" name="imagenArchivo" type="file" accept="image/*" style="display: none;" />
         </div>
     </section>
 </form>

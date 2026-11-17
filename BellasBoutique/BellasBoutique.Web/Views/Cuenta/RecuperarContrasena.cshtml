@@ -6,6 +6,8 @@
 }
 
 <form class="bb-acceso__form" method="post">
+    @Html.AntiForgeryToken()
+    @if(ViewBag.Aviso!=null){<p role="status">@ViewBag.Aviso</p>}
     <h1>Recuperar contraseña</h1>
     <p>Le enviaremos una nueva contraseña a su correo.</p>
 
@@ -16,7 +18,7 @@
         <input id="correo" name="correo" type="email" placeholder="nombre@correo.com" />
     </div>
 
-    <button class="bb-btn bb-btn--bloque" type="button">Enviar nueva contraseña</button>
+    <button class="bb-btn bb-btn--bloque" type="submit">Enviar nueva contraseña</button>
 
     <div class="bb-enlaces-formulario">
         <a href="/Cuenta/Login">Volver a iniciar sesión</a>

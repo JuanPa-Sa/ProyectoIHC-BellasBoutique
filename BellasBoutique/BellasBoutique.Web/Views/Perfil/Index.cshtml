@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Mi perfil";
     ViewData["Menu"] = "Perfil";
+    var u = (BellasBoutique.Web.Models.Demo.UsuarioDemo)Model;
 }
 
 <section class="bb-cabecera-pagina">
     <div class="bb-contenedor">
         <div class="bb-migas"><a href="/">Inicio</a><span>Mi cuenta</span></div>
         <h1>Mi cuenta</h1>
-        <p class="bb-texto-suave" style="margin: 0;">Hola, Ana. Aquí puede actualizar sus datos.</p>
+        <p class="bb-texto-suave" style="margin: 0;">Hola, @u.Nombre. Aquí puede actualizar sus datos.</p>
     </div>
 </section>
 
@@ -19,41 +20,43 @@
             <li><a class="activo" href="/Perfil">Mis datos</a></li>
             <li><a href="/Carrito">Mi carrito</a></li>
             <li><a href="/Soporte">Ayuda</a></li>
-            <li><a href="/Cuenta/Login">Cerrar sesión</a></li>
+            <li><a href="/Cuenta/Salir">Cerrar sesión</a></li>
         </ul>
 
         <form method="post">
+            @Html.AntiForgeryToken()
+            @if(TempData["Aviso"]!=null){<p>@TempData["Aviso"]</p>}
             <h2 class="bb-subtitulo">Mis datos</h2>
             <div class="bb-fila-campos">
                 <div class="bb-campo">
                     <label for="id">ID</label>
-                    <input id="id" type="text" value="U-0001" readonly />
+                    <input id="id" type="text" value="@u.Codigo" readonly />
                     <span class="bb-ayuda">No se puede modificar.</span>
                 </div>
                 <div class="bb-campo">
                     <label for="correo">Correo electrónico</label>
-                    <input id="correo" type="email" value="ana.mora@correo.com" readonly />
+                    <input id="correo" type="email" value="@u.Correo" readonly />
                     <span class="bb-ayuda">No se puede modificar.</span>
                 </div>
                 <div class="bb-campo">
                     <label for="nombre">Nombre</label>
-                    <input id="nombre" name="nombre" type="text" value="Ana" />
+                    <input id="nombre" name="nombre" type="text" value="@u.Nombre" />
                 </div>
                 <div class="bb-campo">
                     <label for="apellidos">Apellidos</label>
-                    <input id="apellidos" name="apellidos" type="text" value="Mora Solís" />
+                    <input id="apellidos" name="apellidos" type="text" value="@u.Apellidos" />
                 </div>
                 <div class="bb-campo">
                     <label for="telefono">Teléfono</label>
-                    <input id="telefono" name="telefono" type="tel" value="8888-8888" />
+                    <input id="telefono" name="telefono" type="tel" value="@u.Telefono" />
                 </div>
             </div>
             <div class="bb-campo">
                 <label for="direccion">Dirección</label>
-                <textarea id="direccion" name="direccion" rows="2" style="min-height: 80px;">San Pedro, Montes de Oca</textarea>
+                <textarea id="direccion" name="direccion" rows="2" style="min-height: 80px;">@u.Direccion</textarea>
             </div>
 
-            <button class="bb-btn" type="button">Guardar cambios</button>
+            <button class="bb-btn" type="submit">Guardar cambios</button>
         </form>
     </div>
 </div>

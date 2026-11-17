@@ -32,7 +32,7 @@
                     </a>
                     <a class="bb-icono" href="/Carrito" aria-label="Carrito">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 13H6.2L5 8z" /><path d="M9 8V6a3 3 0 0 1 6 0v2" /></svg>
-                        <b class="bb-icono__contador">3</b>
+                        <b class="bb-icono__contador">@Context.Session.ObtenerCarrito().Sum(i => i.Cantidad)</b>
                         <span>Carrito</span>
                     </a>
                 </div>
@@ -83,7 +83,7 @@
                     <ul>
                         <li><a href="/Perfil">Mi perfil</a></li>
                         <li><a href="/Carrito">Carrito</a></li>
-                        <li><a href="/Cuenta/Login">Cerrar sesión</a></li>
+                        <li><a href="/Cuenta/Salir">Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>

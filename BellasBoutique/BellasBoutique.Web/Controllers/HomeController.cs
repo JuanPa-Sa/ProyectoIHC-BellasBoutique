@@ -1,12 +1,8 @@
-/* Responsable: Joel
-   Página de inicio y página de error de la vista Cliente. */
 using Microsoft.AspNetCore.Mvc;
-
+using BellasBoutique.Web.Data;
 namespace BellasBoutique.Web.Controllers;
-
-public class HomeController : Controller
+public class HomeController(TiendaDb db):Controller
 {
-    public IActionResult Index() => View();
-
-    public IActionResult Error() => View();
+    public IActionResult Index()=>View(db.Productos().Take(4).ToList());
+    public IActionResult Error()=>View();
 }

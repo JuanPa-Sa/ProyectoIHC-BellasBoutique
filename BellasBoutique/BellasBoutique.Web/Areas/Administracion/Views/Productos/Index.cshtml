@@ -5,23 +5,15 @@
     ViewData["Menu"] = "Productos";
     ViewData["Migas"] = "Productos";
 
-    // Datos de ejemplo para ver el diseño.
-    var productos = new[]
-    {
-        new { Codigo = "P-0001", Nombre = "Vestido floral",      Categoria = "Ropa",       Precio = 24500m, Stock = 12, Proveedor = "Moda Tica", Activo = true },
-        new { Codigo = "P-0002", Nombre = "Blusa de lino",       Categoria = "Ropa",       Precio = 15900m, Stock = 2,  Proveedor = "Moda Tica", Activo = true },
-        new { Codigo = "P-0003", Nombre = "Sandalias trenzadas", Categoria = "Calzado",    Precio = 21000m, Stock = 1,  Proveedor = "Pasos CR",  Activo = true },
-        new { Codigo = "P-0004", Nombre = "Tacones nude",        Categoria = "Calzado",    Precio = 32000m, Stock = 3,  Proveedor = "Pasos CR",  Activo = true },
-        new { Codigo = "P-0005", Nombre = "Bolso tote",          Categoria = "Accesorios", Precio = 18750m, Stock = 10, Proveedor = "Detalles",  Activo = true },
-        new { Codigo = "P-0006", Nombre = "Collar dorado",       Categoria = "Accesorios", Precio = 9900m,  Stock = 0,  Proveedor = "Detalles",  Activo = false }
-    };
+    var productos=Model as List<BellasBoutique.Web.Models.Demo.ProductoDemo> ?? new();
     const int stockReferencia = 20; // solo para dibujar la barra de ejemplo
 }
 
+@if(TempData["Aviso"]!=null){<p role="status">@TempData["Aviso"]</p>}
 <div class="adm-titulo">
     <div>
         <h1>Productos</h1>
-        <p>@productos.Length productos &middot; @productos.Count(p => p.Stock <= 3 && p.Activo) con stock bajo</p>
+        <p>@productos.Count productos &middot; @productos.Count(p => p.Stock <= 3 && p.Activo) con stock bajo</p>
     </div>
     <a class="adm-btn adm-btn--acento" href="/Administracion/Productos/Formulario">+ Registrar producto</a>
 </div>
@@ -90,9 +82,9 @@
                         </td>
                         <td>
                             <div class="adm-acciones-fila">
-                                <a class="adm-btn adm-btn--sm" href="/Administracion/Productos/Formulario">Modificar</a>
-                                <button class="adm-btn adm-btn--sm" type="button">Stock</button>
-                                <button class="adm-btn adm-btn--sm adm-btn--peligro" type="button">Dar de baja</button>
+                                <a class="adm-btn adm-btn--sm" href="/Administracion/Productos/Formulario?id=@p.Id">Modificar</a>
+                                <form method="post" action="/Administracion/Productos/Stock" style="display:inline-flex;gap:4px">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@p.Id"/><input type="number" name="stock" value="@p.Stock" min="0" style="width:64px" aria-label="Stock"/><button class="adm-btn adm-btn--sm" type="submit">Stock</button></form>
+                                <form method="post" action="/Administracion/Productos/Baja" style="display:inline">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@p.Id"/><button class="adm-btn adm-btn--sm adm-btn--peligro" type="submit">Dar de baja</button></form>
                             </div>
                         </td>
                     </tr>
@@ -102,7 +94,7 @@
     </div>
 
     <div class="adm-pie-tabla">
-        <span>Mostrando 1–@productos.Length de @productos.Length</span>
+        <span>Mostrando 1–@productos.Count de @productos.Count</span>
         <div class="adm-paginas">
             <button class="adm-btn adm-btn--icono adm-btn--sm" type="button" aria-label="Anterior">&lsaquo;</button>
             <button class="adm-btn adm-btn--icono adm-btn--sm activo" type="button">1</button>
